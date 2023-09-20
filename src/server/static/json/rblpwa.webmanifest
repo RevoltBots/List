@@ -1,0 +1,22 @@
+{
+    "name": "Revolt Bot List",
+    "short_name": "RBL",
+    "description": "Revolt Bots, providing you and your community to experience more than just a chat room.",
+    "icons": [
+      {
+        "src": "/img/icon.webp",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icon.webp",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "fullscreen",
+    "theme_color": "#FF0000",
+    "background_color": "#FF0000"
+  }
+  
