@@ -194,8 +194,8 @@ router.post("/submit", async (req, res) => {
   await serverModel.create({
     id: data.serverid,
     name: serverRaw.name,
-    iconURL: `https://autumn.revolt.chat/icons/${serverRaw.icon._id}`,
-    bannerURL: `https://autumn.revolt.chat/banners/${serverRaw.banner._id}`,
+    iconURL: `https://autumn.revolt.chat/icons/${serverRaw.icon?._id}`,
+    bannerURL: `https://autumn.revolt.chat/banners/${serverRaw.banner?._id}`,
     prefix: data.prefix,
     shortDesc: data.shortDesc,
     banned: false,
@@ -267,7 +267,7 @@ router.post("/:id/vote", async (req, res) => {
   if (logs)
     logs
       .sendMessage(
-        `<\\@${req.session.userAccountId}> voted for **${BotRaw.username}**.\n<https://revoltbots.org/bots/${bot.vanity || BotRaw._id}>`
+        `<\\@${req.session.userAccountId}> voted for **${BotRaw.username}**.\n<https://revoltbots.org/servers/${BotRaw._id}>`
       )
       .catch(() => null);
 

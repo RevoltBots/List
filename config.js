@@ -2,7 +2,7 @@ const path = require("node:path");
 require("dotenv").config({ path: path.join(__dirname, '.env') });
 
 module.exports = {
-  port: 4891,
+  port: 4879,
   mongoURI: process.env.mongoURI,
   sessionSecret: process.env.sessionSecret,
   ownerids: ["01FEYFD1WH6YXSD0EHVNFW6VSB"],
