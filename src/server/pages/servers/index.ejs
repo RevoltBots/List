@@ -30,13 +30,12 @@
         <input type="text" class="form-control" style="height: 45px" name="q" placeholder="Searching for servers...">
       </form>
           <% for(let i = 0; i < config.tags.servers.length; i++){ %>
-            <%  if (i === 6) break; %>
             <a href="/servers/tags/<%= config.tags.servers[i].toLowerCase() %>">
                <button style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-primary pl-3 pr-3 mr-3"><i class="fa-brands fa-hashtag"></i>&nbsp;&nbsp;<span style="text-align: right;"><b><%= config.tags.servers[i] %></b></span></button>
            </a>
                <% } %>
-               <a href="/explore">
-               <button style="border-radius: 7px;margin-top:3px;" class="btn btn-secondary pl-3 pr-3 mr-3"><i class="fa-solid fa-compass"></i> <b>Explore</b>&nbsp;&nbsp;<span style="text-align: right;"><i class="fa-solid fa-arrow-right"></i></span></button>
+<!--               <a href="/servers/explore">-->
+<!--             <button style="border-radius: 7px;margin-top:3px;" class="btn btn-secondary pl-3 pr-3 mr-3"><i class="fa-solid fa-compass"></i> <b>Explore</b>&nbsp;&nbsp;<span style="text-align: right;"><i class="fa-solid fa-arrow-right"></i></span></button> -->
   </div>
   </div>
   </a>
