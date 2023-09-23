@@ -39,11 +39,11 @@ router.post("/search", async (req, res) => {
     banned: false,
     description: { $regex: `${req.body.q}`, $options: "i" },
   });
-  let botName = await botModel.find({
+  let botName = await serverModel.find({
     banned: false,
     name: { $regex: `${req.body.q}`, $options: "i" },
   });
-  let botShort = await botModel.find({
+  let botShort = await serverModel.find({
     banned: false,
     shortDesc: { $regex: `${req.body.q}`, $options: "i" },
   });
