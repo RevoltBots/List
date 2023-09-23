@@ -65,23 +65,26 @@ router.post("/search", async (req, res) => {
     user.avatar = userRaw.avatar;
     user.id = user.revoltId;
   }
+  let bot = srv;
   if (srv == null || srv.length == 0)
     return res.render("search.ejs", {
       error: "No servers could not be found on our list with specified term.",
       srv: srv || null,
+      bot: srv || null,
       tag: req.query.q || null,
       user: user || null,
     });
   res.render("search.ejs", {
     user: user || null,
     srv,
+    bot,
     error: null,
     tag: req.params.tag,
   });
 });
 
 router.get("/tags/:tag", async (req, res) => {
-  let srv = await serverModelModel.find({
+  let srv = await serverModel.find({
     tags: { $regex: `^${req.params.tag}$`, $options: "i" },
   });
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
