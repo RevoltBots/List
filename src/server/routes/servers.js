@@ -34,6 +34,81 @@ router.get("/submit", async (req, res) => {
     tags: config.tags.servers,
   });
 });
+router.post("/search", async (req, res) => {
+  let botDesc = await serverModel.find({
+    banned: false,
+    description: { $regex: `${req.body.q}`, $options: "i" },
+  });
+  let botName = await botModel.find({
+    banned: false,
+    name: { $regex: `${req.body.q}`, $options: "i" },
+  });
+  let botShort = await botModel.find({
+    banned: false,
+    shortDesc: { $regex: `${req.body.q}`, $options: "i" },
+  });
+  let user = await userModel.findOne({ revoltId: req.session.userAccountId });
+  let srv =
+    botDesc.length >= 1
+      ? botDesc
+      : botShort.length >= 1
+        ? botShort
+        : botName.length >= 1
+          ? botName
+          : [];
+  for (let i = 0; i < srv.length; i++) {
+    srv[i].tags = srv[i].tags.join(", ");
+  }
+  if (user) {
+    let userRaw = await client.users.fetch(user.revoltId);
+    user.username = userRaw.username;
+    user.avatar = userRaw.avatar;
+    user.id = user.revoltId;
+  }
+  if (srv == null || srv.length == 0)
+    return res.render("search.ejs", {
+      error: "No servers could not be found on our list with specified term.",
+      srv: srv || null,
+      tag: req.query.q || null,
+      user: user || null,
+    });
+  res.render("search.ejs", {
+    user: user || null,
+    srv,
+    error: null,
+    tag: req.params.tag,
+  });
+});
+
+router.get("/tags/:tag", async (req, res) => {
+  let srv = await serverModelModel.find({
+    tags: { $regex: `^${req.params.tag}$`, $options: "i" },
+  });
+  let user = await userModel.findOne({ revoltId: req.session.userAccountId });
+  if (user) {
+    let userRaw = await client.users.fetch(user.revoltId);
+    user.username = userRaw.username;
+    user.avatar = userRaw.avatar;
+    user.id = user.revoltId;
+  }
+  for (let i = 0; i < srv.length; i++) {
+    srv[i].tags = srv[i].tags.join(", ");
+  }
+  if (srv.length == 0)
+    return res.render("search.ejs", {
+      error: "No Servers could not be found on our list with specified tag.",
+      srv: srv || null,
+      tag: req.params.tag || null,
+      user: user || null,
+    });
+  res.render("search.ejs", {
+    user: user || null,
+    srv,
+    error: null,
+    tag: req.params.tag.toUpperCase(),
+  });
+});
+
 router.get('/:id', async (req, res) => {
   let servers = await serverModel.findOne({ id: req.params.id });
 
@@ -64,13 +139,13 @@ router.get("/:id/edit", async (req, res) => {
     user.id = user.revoltId;
   }
   if (!bot || bot == null)
-  if (!bot || bot == null) return res.status(404).render(
-    "error.ejs", {
-    user,
-    code: 404,
-    message: "This server could not be found on our list.",
-  }
-  )
+    if (!bot || bot == null) return res.status(404).render(
+      "error.ejs", {
+      user,
+      code: 404,
+      message: "This server could not be found on our list.",
+    }
+    )
   if (!bot.owners.includes(user.revoltId)) return res.redirect("/");
   res.render("servers/edit.ejs", {
     user: user || null,
