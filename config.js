@@ -47,7 +47,7 @@ module.exports = {
       'Anime',
       'Fun',
       'Roleplay',
-      'Givaway',
+      'Giveaway',
       "NSFW"
     ]
   },
