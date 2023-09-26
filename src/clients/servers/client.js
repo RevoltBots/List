@@ -21,7 +21,7 @@ for (const file of eventFiles) {
 //-Commands-//
 client.commands = new Collection();
 client.aliases = new Collection();
-client.memberMap = mapMembers;
+client.memberMap = mapMembers();
 
 // -- Function From Remix Bot --//
 async function mapMembers() {
