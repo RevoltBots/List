@@ -94,7 +94,7 @@
         <% if (bot.support) { %>
         <a href="<%= bot.support %>" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-info pr-3 pl-3 mr-1"><img src="/img/revolt.svg" alt="Revolt Icon" height="18px" width="18px">Support</a>
         <% } %>
-      } %>
+      <% } %>
         <% if (user && bot.owners.includes(user.revoltId)) { %>
         <a href="/bots/<%= bot.id %>/edit" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent; color: white" class="btn btn-warning pr-3 pl-3 mr-1"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
         <% } %>
