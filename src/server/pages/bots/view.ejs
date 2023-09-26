@@ -92,15 +92,16 @@
                                   bot.votes %>&nbsp;&nbsp;|&nbsp;&nbsp; <i class="fa-solid fa-server"></i>
                                   <b>Servers:</b>
                                   <%= bot.servers || "N/A" %>&nbsp;&nbsp;|&nbsp;&nbsp;
-                                    <i class="fa-solid fa-clock"></i> <b>Submitted</b>: <%= new
-                                      Date(bot.submittedOn).toLocaleDateString() %>
+                                    <i class="fa-solid fa-clock"></i> <b>Submitted</b>:
+                                    <%= new Date(bot.submittedOn).toLocaleDateString() %>
                             </p>
                             <hr>
-                            <% if (bot.testBot === true){ %>
+                              <% if (bot.testBot === true){ %>
                               <a href="https://app.revolt.chat/bot/<%= bot.id %>" type="button" aria-disabled="true"
                                 style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent"
                                 class="btn btn-primary pr-3 pl-3 mr-1"><i class="fa-solid fa-plus"></i> Invite</a>
-                              <% } if (bot.testBot !== true ) { %>
+                              <% } %>
+                              <% if (bot.testBot !== true ) { %>
                                 <a href="https://app.revolt.chat/bot/<%= bot.id %>" type="button"
                                   style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent"
                                   class="btn btn-primary pr-3 pl-3 mr-1"><i class="fa-solid fa-plus"></i> Invite</a>
@@ -137,7 +138,9 @@
                                                     class="btn btn-warning pr-3 pl-3 mr-1"><i
                                                       class="fa-solid fa-pen-to-square"></i> Edit</a>
                                                   <% } %>
-                          </div>
+
+                                                  <% } %>
+                                                </div>
                   </div><br><br>
                   <% try { %>
                     <% if(bot.owners.filter(o=> o !== "").length >= 2){ %>
