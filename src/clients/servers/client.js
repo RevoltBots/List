@@ -24,10 +24,10 @@ client.commands = new Collection();
 client.aliases = new Collection();
 client.memberMap = mapMembers();
 client.eepy = sleep
+
 // -- Function From Remix Bot --//
 async function mapMembers() {
   return new Promise(async res => {
-    if (!client.mapMembers) return res();
     const evaluate = (data) => {
       data = data.map(v => v.value);
       data.forEach(members => {
