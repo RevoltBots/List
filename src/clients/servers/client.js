@@ -54,6 +54,7 @@ async function mapMembers() {
         promises.length = 0;
         await sleep.sleep(2);
       }
+      await sleep.sleep(2);
       promises.push(servers[i].fetchMembers());
     }
     if (promises.length !== 0) evaluate(await Promise.allSettled(promises));
