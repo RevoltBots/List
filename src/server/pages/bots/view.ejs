@@ -48,7 +48,7 @@
       <img class="idk" src="<%= bot.iconURL %>">
       <% if (bot.Status) { %>
         <div style="border-radius: 50%; background-color:#290F1D; width: 65px; height: 65px; margin-left: -65px; margin-top: 118px;"></div> 
-        <i style="margin-top: 127px; margin-left:-56px; font-size: 50px; color: <%= bot.statusColor %>" class="fa-solid fa-circle" title="<%= bot.Status %>"></i> 
+        <i style="margin-top: 127px; margin-left:-56px; font-size: 50px; color:'<%= bot.statusColor %>'" class="fa-solid fa-circle" title="<%= bot.Status %>"></i> 
       <% } else { %>
       <div style="border-radius: 50%; background-color:#290F1D; width: 65px; height: 65px; margin-left: -65px; margin-top: 118px;"></div> 
       <i style="margin-top: 127px; margin-left:-56px; font-size: 50px;color: #A5A5A5" class="fa-solid fa-circle" title="Offline"></i>
@@ -77,7 +77,12 @@
           <i class="fa-solid fa-clock"></i> <b>Submitted</b>: <%= new Date(bot.submittedOn).toLocaleDateString() %>
         </p>
         <hr>
+      <% if (bot.testBot == true){ %>
+        <a href="https://app.revolt.chat/bot/<%= bot.id %>" type="button" aria-disabled="true" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-primary pr-3 pl-3 mr-1"><i class="fa-solid fa-plus"></i> Invite</a>
+      <% } else { %>
         <a href="https://app.revolt.chat/bot/<%= bot.id %>" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-primary pr-3 pl-3 mr-1"><i class="fa-solid fa-plus"></i> Invite</a>
+      } %>
+      <% if (bot.testBot != true){ %>
         <form id="votebutton" method="post" action="/bots/<%= bot.id %>/vote" style="display: none;"></form>
         <a href="/bots/<%= bot.id %>/vote" onclick="document.getElementById('votebutton').submit();" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-info pr-3 pl-3 mr-1"><i class="fa-solid fa-check-to-slot"></i> Vote</a>
         <% if (bot.website) { %>
@@ -89,6 +94,7 @@
         <% if (bot.support) { %>
         <a href="<%= bot.support %>" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-info pr-3 pl-3 mr-1"><img src="/img/revolt.svg" alt="Revolt Icon" height="18px" width="18px">Support</a>
         <% } %>
+      } %>
         <% if (user && bot.owners.includes(user.revoltId)) { %>
         <a href="/bots/<%= bot.id %>/edit" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent; color: white" class="btn btn-warning pr-3 pl-3 mr-1"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
         <% } %>

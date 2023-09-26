@@ -109,6 +109,7 @@ router.post("/submit", checkAuth, async (req, res) => {
       github: data.github || null,
       support: data.support || null,
       library: data.library,
+      testBot: data.testBot || false,
       tags: data.tags,
       owners: data.owners,
       submittedOn: Date.now(),

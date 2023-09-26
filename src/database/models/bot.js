@@ -41,6 +41,10 @@ let app = mongoose.Schema({
     type: Date,
     required: false,
   },
+  testBot: {
+    type: Boolean,
+    default: false,
+  },
   status: {
     type: String,
     default: "awaiting", //- awaiting: waiting to be reviewed, appproved, denied, inprogress: currently being reviewed.

@@ -47,7 +47,12 @@
               <tr>
                 <th scope="row">4</th>
                 <td>Awaiting Approval</td>
-                <td><%= botsdata.filter(b => b.status == "awaiting" || b.status == "awaiting").length ? botsdata.filter(b => b.status == "awaiting" || b.status == "awaiting").length : 0 %></td>
+                <td><%= botsdata.filter(b => b.testBot != true && b.status == "awaiting" || b.testBot != true && b.status == "awaiting").length ? botsdata.filter(b => b.status == "awaiting" || b.status == "awaiting").length : 0 %></td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td>Test Bots:</td>
+                <td><%= botsdata.filter(b =>b.testBot == true && b.status == "awaiting" || b.testBot == true && b.status == "awaiting").length ? botsdata.filter(b => b.status == "awaiting" || b.status == "awaiting").length : 0 %></td>
               </tr>
             </tbody>
           </table>
@@ -226,6 +231,7 @@
         </table>
       </div>
       <script>
+
         document.getElementById("searchUser").addEventListener("keyup", function() {
           let search = document.getElementById("searchUser").value.toLowerCase();
           let users = document.getElementsByTagName("tr");

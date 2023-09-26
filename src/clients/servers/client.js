@@ -21,6 +21,7 @@ for (const file of eventFiles) {
 //-Commands-//
 client.commands = new Collection();
 client.aliases = new Collection();
+
 const getFiles = (path) =>
   readdirSync(join(__dirname, path)).filter((file) => file.endsWith(".js"));
 for (const cfile of getFiles("commands")) {
@@ -29,6 +30,5 @@ for (const cfile of getFiles("commands")) {
   if (command.aliases)
     command.aliases.forEach((alias) => client.aliases.set(alias, command.name));
 }
-
 client.loginBot(config.clients.servers.token);
 
