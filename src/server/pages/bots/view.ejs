@@ -81,7 +81,7 @@
         <a href="https://app.revolt.chat/bot/<%= bot.id %>" type="button" aria-disabled="true" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-primary pr-3 pl-3 mr-1"><i class="fa-solid fa-plus"></i> Invite</a>
       <% } else { %>
         <a href="https://app.revolt.chat/bot/<%= bot.id %>" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-primary pr-3 pl-3 mr-1"><i class="fa-solid fa-plus"></i> Invite</a>
-      } %>
+      <% } %>
       <% if (bot.testBot != true){ %>
         <form id="votebutton" method="post" action="/bots/<%= bot.id %>/vote" style="display: none;"></form>
         <a href="/bots/<%= bot.id %>/vote" onclick="document.getElementById('votebutton').submit();" type="button" style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent" class="btn btn-info pr-3 pl-3 mr-1"><i class="fa-solid fa-check-to-slot"></i> Vote</a>
