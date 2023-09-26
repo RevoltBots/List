@@ -110,7 +110,7 @@
         <%= botclient.users.get(bot.owners[i]).username || "Unknown User" %>
       </b></a>&nbsp;&nbsp;
     <% } %>
-    <% }else{ %>
+    <% } else { %>
     <h2 style="color: white">
       <i class="fa-solid fa-code"></i> <b>Developer</b>
     </h2>
@@ -118,7 +118,7 @@
         <%= botclient.users.get(bot.owners[0]).username || "Unknown User" %>
       </b></a>
     <% } %><br>
-    <% } catch(err) { %>
+    <%= } catch (err) { %>
     <a class="owner" href="/user/<%= bot.owners[0] %>">&nbsp;<b style="font-size: 20px;">Unknown User</b></a>
     <%  } %>
     <hr>
