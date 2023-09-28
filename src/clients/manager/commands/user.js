@@ -26,15 +26,13 @@ module.exports = {
       let x = await userModel.findOne({
         user: BotRaw.id,
       });
-      let y = await botModel.find({ owners: [BotRaw.id] })
-      let z = y.filter(f => {
-        f.owners.includes(BotRaw.id)
-      });
-
+      const botModel = require("../../../database/models/bot");
+      let y = await botModel.find({status: "approved"});
+      let z = y.filter(n =>n.owners.includes("01FEZ476PJPQATRTYVKRXBGFRE"))
       let bots;
       if (z) {
         await z.forEach(b => {
-          bots.push(b)
+          bots.push([b])
         });
       }
       console.log(z)
