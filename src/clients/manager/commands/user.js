@@ -34,8 +34,8 @@ module.exports = {
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         const embed2 = {
-          title: `${BotRaw.name}`, description: `User's Bots: ${bots?.length}\n\n
-          ${bots.length >= 1 ? "\n" +
+          title: `${BotRaw.name}`, description: `User's Bots: ${z.length}\n\n
+          ${z.length >= 1 ? "\n" +
               "|ID|Name|Verified|Certified|URL|\n|----|----|----|----|----|\n " +
               (z.forEach(botInfo => {
                 `| ${botInfo.id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
