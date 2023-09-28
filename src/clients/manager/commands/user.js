@@ -8,6 +8,7 @@ module.exports = {
   async run(client, message, args) {
     try {
       let userModel = require("../../../database/models/user");
+      let botModel = require("../../../database/models/bot");
 
       let BotRaw;
       if (new RegExp(`(<@!?(.*)>)`).test(args[0])) {
@@ -25,9 +26,10 @@ module.exports = {
       let x = await userModel.findOne({
         user: BotRaw.id,
       });
-      let y = await userModel.find({ status: { $regex: `^(?:approved|awaiting|inprogress|denied)$`, $options: "i" }, }).filter(f => {
-        f.owners.includes(BotRaw.id)
-      });
+      let y = await botModel.find({ owners: BotRaw.id})
+      // y.filter(f => {
+      //   f.owners.includes(BotRaw.id)
+      // });
 
       let bots;
       if (y) {
@@ -38,7 +40,7 @@ module.exports = {
       console.log(y)
       if (x) {
         const embed = {
-          title: `${BotRaw.user.name}`, description: `Bio: "__${x.bio}__"\n\nDescription: ${x.description}
+          title: `${BotRaw.name}`, description: `Bio: "__${x.bio}__"\n\nDescription: ${x.description}
           | Github | Website | X | RBL |
           |----|----|----|----|
           |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
@@ -46,7 +48,7 @@ module.exports = {
         }
 
         const embed2 = {
-          title: `${BotRaw.user.name}`, description: `Users Bots: ${bots?.length}
+          title: `${BotRaw.name}`, description: `Users Bots: ${bots?.length}
           | ID | Name | Verified | URL |
           |----|----|----|----|
           |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
