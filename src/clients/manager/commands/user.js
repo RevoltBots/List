@@ -32,14 +32,15 @@ module.exports = {
         const embed = {
           title: BotRaw?.name || BotRaw._id, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n| Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
-
+        let c = [];
         for (x in z){
-          console.log(z[x])
+        c.push(`|${z[x].id} | ${z[x].name} | ${z[x].status}|${z[x].certified}|[RBL](https://revoltbots.org/bots/${z[x].id})\n`)
         }
         const embed2 = {
           title: BotRaw?.name || BotRaw._id, description: `User's Bots: ${z.length}\n\n
           ${z.length >= 1 ? "\n" +
-              "|ID|Name|Verified|Certified|URL|\n|----|----|----|----|----|": ""}`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
+              "|ID|Name|Verified|Certified|URL|\n|----|----|----|----|----|"+`${c.join("\n")}`
+              : ""}`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed, embed2] })
 
