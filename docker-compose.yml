@@ -1,9 +1,16 @@
-version: "3.8"
 
+version: "3.8"
 services:
   database:
-    image: mongo:4.2.2
+    image: mongo:4.2.0
     restart: always
+#    ports:
+ #     - "8080:27017"
     volumes:
       - ./data/db:/data/db
     env_file: .env
+    environment:
+        - AUTH=yes
+        - MONGO_INIT_ROOT_USERNAME=andii
+        - MONGO_INIT_ROOT_PASSWORD=Skeleton2001
+
