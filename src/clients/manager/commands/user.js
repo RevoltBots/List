@@ -26,18 +26,18 @@ module.exports = {
       let x = await userModel.findOne({
         user: BotRaw.id,
       });
-      let y = await botModel.find({ owners: BotRaw.id})
-      // y.filter(f => {
-      //   f.owners.includes(BotRaw.id)
-      // });
+      let y = await botModel.find({ owners: [BotRaw.id] })
+      let z = y.filter(f => {
+        f.owners.includes(BotRaw.id)
+      });
 
       let bots;
-      if (y) {
-        await y.forEach(b => {
-          bots.push([b.id, b.name, b.status, b.certified])
+      if (z) {
+        await z.forEach(b => {
+          bots.push(b)
         });
       }
-      console.log(y)
+      console.log(z)
       if (x) {
         const embed = {
           title: `${BotRaw.name}`, description: `Bio: "__${x.bio}__"\n\nDescription: ${x.description}
@@ -46,12 +46,14 @@ module.exports = {
           |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
-
         const embed2 = {
           title: `${BotRaw.name}`, description: `Users Bots: ${bots?.length}
-          | ID | Name | Verified | URL |
-          |----|----|----|----|
-          |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
+          ${bots.length >= 1 ? "" +
+          "       | ID | Name | Verified | Certified | URL |" +
+              bots.forEach(botInfo => {
+                  "       |----|----|----|----| " +
+                  `       | ${bots.id} | [Website](${bots.name || "N/A"})| [X](${bots.status || "N/A"})| (${bots.certifed || "N/A"}) |[RBL](https://revoltbots.org/users/${bots.id})|`
+              }) : ""},
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed] })
