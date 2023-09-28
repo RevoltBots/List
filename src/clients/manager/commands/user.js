@@ -35,6 +35,11 @@ module.exports = {
         let a = await (z.forEach((botInfo)=>{
           return `| ${botInfo.id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
         }))
+        
+        for (x in z.length){
+          console.log(z[x])
+        }
+
         console.log(a)
         const embed2 = {
           title: BotRaw?.name || BotRaw._id, description: `User's Bots: ${z.length}\n\n
