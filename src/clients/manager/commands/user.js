@@ -26,7 +26,6 @@ module.exports = {
       let x = await userModel.findOne({
         user: BotRaw.id,
       });
-      const botModel = require("../../../database/models/bot");
       let y = await botModel.find({status: "approved"});
       let z = y.filter(n =>n.owners.includes("01FEZ476PJPQATRTYVKRXBGFRE"))
       let bots;
@@ -54,7 +53,7 @@ module.exports = {
               }) : ""}
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
-        message.reply({ embeds: [embed] })
+        message.reply({ embeds: [embed,embed2] })
 
       }
     } catch (err) {
