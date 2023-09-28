@@ -40,10 +40,7 @@ module.exports = {
         const embed2 = {
           title: BotRaw?.name || BotRaw._id, description: `User's Bots: ${z.length}\n\n
           ${z.length >= 1 ? "\n" +
-              "|ID|Name|Verified|Certified|URL|\n|----|----|----|----|----|\n " +
-              (z.forEach(async (botInfo)=>{
-                `| ${botInfo[x].id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
-              })) : ""}`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
+              "|ID|Name|Verified|Certified|URL|\n|----|----|----|----|----|": ""}`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed, embed2] })
 
