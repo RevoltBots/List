@@ -30,10 +30,9 @@ module.exports = {
       let z = y.filter(n => n.owners.includes(BotRaw._id))
       if (x) {
         const embed = {
-          title: BotRaw?.name || BotRaw._id, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n| Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
-          `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
+          title: BotRaw?.name || BotRaw._id, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n| Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
-        let a = (z.forEach(async (botInfo)=>{
+        let a = await (z.forEach((botInfo)=>{
           return `| ${botInfo.id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
         }))
         console.log(a)
