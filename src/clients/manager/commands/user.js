@@ -37,19 +37,16 @@ module.exports = {
       console.log(z)
       if (x) {
         const embed = {
-          title: `${x.name}`, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n
-          | Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
+          title: `${x.name}`, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n| Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         const embed2 = {
           title: `${BotRaw.name}`, description: `Users Bots: ${bots?.length}
           ${bots.length >= 1 ? "" +
-              "      |ID|Name|Verified|Certified|URL|          \n" +
-              "      |----|----|----|----|----|\n " +
-              bots.forEach(botInfo => {
-                `       | ${botInfo.id} | [Website](${botInfo.name || "N/A"})| [X](${botInfo.status || "N/A"})| (${botInfo.certifed || "N/A"}) |[RBL](https://revoltbots.org/users/${botInfo.id})|`
-              }) : ""}
-          `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
+              "|ID|Name|Verified|Certified|URL|\n|----|----|----|----|----|\n " +
+              (bots.forEach(botInfo => {
+                `| ${botInfo.id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
+              })) : ""}`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed, embed2] })
 
