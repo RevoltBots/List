@@ -23,10 +23,10 @@ module.exports = {
         return message.reply("This is not a real user. :hmm:");
 
         let x = await userModel.findOne({
-        user: BotRaw.user.id,
+        user: BotRaw.id,
       });
       let y = await userModel.filter(f=>{
-        f.owners.includes(BotRaw.user.id)
+        f.owners.includes(BotRaw.id)
       });
 
       let bots;
