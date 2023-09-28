@@ -8,9 +8,9 @@ module.exports = {
   async run(client, message, args) {
     try {
       const embed = {
-        "title": msg.author.username,
-        "colour": msg.member.hoistedRole.colour,
-        "icon_url": msg.author.generateAvatarURL({ size: 4096, }, true),
+        "title": message.author.username,
+        "colour": message.member.hoistedRole.colour,
+        "icon_url": message.author.generateAvatarURL({ size: 4096, }, true),
         "description": `| Command | Example | Description |\n|----------|----------|----------|\n| Vote | {prefix} vote <@Bot>  | vote for a bot on the list   |\n| bot   | {prefix} info <@Bot>   | shows bot information |\n| user   | {prefix} user <@user>   | shows user information |\n| help   | {prefix} help | shows this response. |\n| ping   | {prefix} ping | shows my latency information. |`
       }
       return message.reply({ embeds: [embed] })
