@@ -22,33 +22,37 @@ module.exports = {
       if (!BotRaw || BotRaw.bot)
         return message.reply("This is not a real user. :hmm:");
 
-        let x = await userModel.findOne({
+      let x = await userModel.findOne({
         user: BotRaw.id,
       });
-      let y = await userModel.filter(f=>{
+      let y = await userModel.find({ status: { $regex: `^(?:approved|awaiting|inprogress|denied)$`, $options: "i" }, }).filter(f => {
         f.owners.includes(BotRaw.id)
       });
 
       let bots;
-      if (y){
-       await y.forEach(b => {
-          bots.push([b.id,b.name, b.verified, b.certified])
+      if (y) {
+        await y.forEach(b => {
+          bots.push([b.id, b.name, b.status, b.certified])
         });
       }
       console.log(y)
       if (x) {
-          const embed = {title: `${BotRaw.user.name}`, description:`Bio: "__${x.bio}__"\n\nDescription: ${x.description}
+        const embed = {
+          title: `${BotRaw.user.name}`, description: `Bio: "__${x.bio}__"\n\nDescription: ${x.description}
           | Github | Website | X | RBL |
           |----|----|----|----|
-          |[GitHub](${x.github||"N/A"}) | [Website](${x.website||"N/A"})| [X](${x.twitter||"N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
-          `,icon_url:BotRaw.user.generateAvatarURL({size: 4096}, true)}
+          |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
+          `, icon_url: BotRaw.user.generateAvatarURL({ size: 4096 }, true)
+        }
 
-          const embed2 = {title: `${BotRaw.user.name}`, description:`Users Bots: ${bots?.length}
+        const embed2 = {
+          title: `${BotRaw.user.name}`, description: `Users Bots: ${bots?.length}
           | ID | Name | Verified | URL |
           |----|----|----|----|
-          |[GitHub](${x.github||"N/A"}) | [Website](${x.website||"N/A"})| [X](${x.twitter||"N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
-          `,icon_url:BotRaw.user.generateAvatarURL({size: 4096}, true)}
-          message.reply({embeds:[embed]})
+          |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
+          `, icon_url: BotRaw.user.generateAvatarURL({ size: 4096 }, true)
+        }
+        message.reply({ embeds: [embed] })
 
       }
     } catch (err) {
