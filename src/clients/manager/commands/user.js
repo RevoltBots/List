@@ -34,7 +34,7 @@ module.exports = {
         }
         let c = [];
         for (x in z){
-        c.push(`|${z[x].id} | ${z[x].name} | ${z[x].status}|${z[x].certified}|[RBL](https://revoltbots.org/bots/${z[x].id})\n`)
+        c.push(`|${z[x].id} | ${z[x].name} | ${z[x].status}|${z[x].certified}|[RBL](https://revoltbots.org/bots/${z[x].id})`)
         }
         const embed2 = {
           title: BotRaw?.name || BotRaw._id, description: `User's Bots: ${z.length}\n\n
