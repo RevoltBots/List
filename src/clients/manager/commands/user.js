@@ -26,8 +26,8 @@ module.exports = {
       let x = await userModel.findOne({
         user: BotRaw.id,
       });
-      let y = await botModel.find({status: "approved"});
-      let z = y.filter(n =>n.owners.includes(BotRaw.id))
+      let y = await botModel.find({ status: "approved" });
+      let z = y.filter(n => n.owners.includes(BotRaw.id))
       let bots = [];
       if (z) {
         await z.forEach(b => {
@@ -46,14 +46,14 @@ module.exports = {
         const embed2 = {
           title: `${BotRaw.name}`, description: `Users Bots: ${bots?.length}
           ${bots.length >= 1 ? "" +
-          "       | ID | Name | Verified | Certified | URL |" +
+              "      |ID|Name|Verified|Certified|URL|          \n" +
+              "      |----|----|----|----|----|\n " +
               bots.forEach(botInfo => {
-                  "       |----|----|----|----| " +
-                  `       | ${bots.id} | [Website](${bots.name || "N/A"})| [X](${bots.status || "N/A"})| (${bots.certifed || "N/A"}) |[RBL](https://revoltbots.org/users/${bots.id})|`
+                `       | ${botInfo.id} | [Website](${botInfo.name || "N/A"})| [X](${botInfo.status || "N/A"})| (${botInfo.certifed || "N/A"}) |[RBL](https://revoltbots.org/users/${botInfo.id})|`
               }) : ""}
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
-        message.reply({ embeds: [embed,embed2] })
+        message.reply({ embeds: [embed, embed2] })
 
       }
     } catch (err) {
