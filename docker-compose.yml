@@ -11,6 +11,6 @@ services:
     env_file: .env
     environment:
         - AUTH=yes
-        - MONGO_INIT_ROOT_USERNAME=andii
-        - MONGO_INIT_ROOT_PASSWORD=Skeleton2001
+        - MONGO_INIT_ROOT_USERNAME=rbladmin
+        - MONGO_INIT_ROOT_PASSWORD=YouDontKnowMyPassw0rd
 
