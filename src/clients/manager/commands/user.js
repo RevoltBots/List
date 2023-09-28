@@ -34,12 +34,12 @@ module.exports = {
         }
         let c = [];
         for (x in z){
-        c.push(`| ${z[x].name} | ${z[x].prefix ||""}| ${z[x].status}|${z[x].certified}|${z[x].votes || 0}|${z[x].servers || "N/A"}|[RBL](https://revoltbots.org/bots/${z[x].id})|`)
+        c.push(`| ${z[x].name} | ${z[x].prefix ||""}| ${z[x].status}|${z[x].certified}|${z[x].monthlyVotes || 0}:${z[x].votes}|${z[x].servers || "N/A"}|[RBL](https://revoltbots.org/bots/${z[x].id})|`)
         }
         const embed2 = {
           title: BotRaw?.name || BotRaw._id, description: `User's Bots: ${z.length}\n\n
           ${z.length >= 1 ? "\n" +
-              "|Name|Verified|Certified|URL|\n|----|----|----|----|----|----|----|\n"+`${c.join("\n")}`
+              "|Name|Prefix|Verified|Certified|Votes|Servers|URL|\n|----|----|----|----|----|----|----|\n"+`${c.join("\n")}`
               : ""}`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed, embed2] })
