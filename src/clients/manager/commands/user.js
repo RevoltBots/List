@@ -32,15 +32,10 @@ module.exports = {
         const embed = {
           title: BotRaw?.name || BotRaw._id, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n| Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|`, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
-        let a = await (z.forEach((botInfo)=>{
-          return `| ${botInfo.id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
-        }))
-        
-        for (x in z.length){
+
+        for (x in z){
           console.log(z[x])
         }
-
-        console.log(a)
         const embed2 = {
           title: BotRaw?.name || BotRaw._id, description: `User's Bots: ${z.length}\n\n
           ${z.length >= 1 ? "\n" +
