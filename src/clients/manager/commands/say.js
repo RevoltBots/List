@@ -5,6 +5,7 @@ module.exports = {
     description: "Repeat back a given message.",
     async run(client, message, args) {
       try {
+        if (message.channel.server_id !== "") return;
         message.channel.startTyping();
         if (!args[0]) return message.reply({ content: "Please provide me with something to say!"}, false);
 

@@ -22,11 +22,12 @@ for (const file of eventFiles) {
 //-Commands-//
 client.commands = new Collection();
 client.aliases = new Collection();
-client.memberMap = mapMembers();
+client.memberMap = new Map();
 client.eepy = sleep
-
+this.userCache = [];
+client.mm = mapMembers();
 // -- Function From Remix Bot --//
-async function mapMembers() {
+async function mapMembers(){
   return new Promise(async res => {
     const evaluate = (data) => {
       data = data.map(v => v.value);
