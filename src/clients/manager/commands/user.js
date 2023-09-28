@@ -24,23 +24,21 @@ module.exports = {
         return message.reply("This is not a real user. :hmm:");
 
       let x = await userModel.findOne({
-        user: BotRaw.id,
+        revoltId: BotRaw.id,
       });
       let y = await botModel.find({ status: "approved" });
       let z = y.filter(n => n.owners.includes(BotRaw.id))
       let bots = [];
       if (z) {
         await z.forEach(b => {
-          bots.push([b])
+          bots.push(b)
         });
       }
       console.log(z)
       if (x) {
         const embed = {
-          title: `${BotRaw.name}`, description: `Bio: "__${x.bio}__"\n\nDescription: ${x.description}
-          | Github | Website | X | RBL |
-          |----|----|----|----|
-          |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
+          title: `${BotRaw.name}`, description: `Bio: "__${x.bio}__"\nDescription: ${x.description}\n\n
+          | Github | Website | X | RBL |\n|----|----|----|----|\n|[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         const embed2 = {
