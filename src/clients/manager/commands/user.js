@@ -53,7 +53,7 @@ module.exports = {
               bots.forEach(botInfo => {
                   "       |----|----|----|----| " +
                   `       | ${bots.id} | [Website](${bots.name || "N/A"})| [X](${bots.status || "N/A"})| (${bots.certifed || "N/A"}) |[RBL](https://revoltbots.org/users/${bots.id})|`
-              }) : ""},
+              }) : ""}
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed] })
