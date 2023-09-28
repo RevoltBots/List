@@ -34,7 +34,7 @@ module.exports = {
           `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         let a = (z.forEach(async (botInfo)=>{
-          return `| ${botInfo[x].id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
+          return `| ${botInfo.id} | ${botInfo.name} | ${botInfo.status} | ${botInfo.certifed}| [Page](https://revoltbots.org/users/${botInfo.id})|\n`
         }))
         console.log(a)
         const embed2 = {
