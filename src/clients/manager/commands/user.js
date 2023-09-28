@@ -44,7 +44,7 @@ module.exports = {
           | Github | Website | X | RBL |
           |----|----|----|----|
           |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
-          `, icon_url: BotRaw.user.generateAvatarURL({ size: 4096 }, true)
+          `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
 
         const embed2 = {
@@ -52,7 +52,7 @@ module.exports = {
           | ID | Name | Verified | URL |
           |----|----|----|----|
           |[GitHub](${x.github || "N/A"}) | [Website](${x.website || "N/A"})| [X](${x.twitter || "N/A"})|[RBL](https://revoltbots.org/users/${x.revoltId})|
-          `, icon_url: BotRaw.user.generateAvatarURL({ size: 4096 }, true)
+          `, icon_url: BotRaw.generateAvatarURL({ size: 4096 }, true)
         }
         message.reply({ embeds: [embed] })
 
