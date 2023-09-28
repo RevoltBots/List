@@ -28,7 +28,7 @@ module.exports = {
       });
       let y = await botModel.find({status: "approved"});
       let z = y.filter(n =>n.owners.includes("01FEZ476PJPQATRTYVKRXBGFRE"))
-      let bots;
+      let bots = [];
       if (z) {
         await z.forEach(b => {
           bots.push([b])
