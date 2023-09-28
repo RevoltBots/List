@@ -24,10 +24,10 @@ module.exports = {
         return message.reply("This is not a real user. :hmm:");
 
       let x = await userModel.findOne({
-        revoltId: BotRaw.id,
+        revoltId: BotRaw.user.id,
       });
       let y = await botModel.find({ status: "approved" });
-      let z = y.filter(n => n.owners.includes(BotRaw.id))
+      let z = y.filter(n => n.owners.includes(BotRaw.user.id))
       let bots = [];
       if (z) {
         await z.forEach(b => {
