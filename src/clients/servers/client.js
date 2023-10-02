@@ -28,7 +28,7 @@ client.memberCount = (server) => {
   if (typeof server === "object") server = server.id;
   return client.memberMap.get(server).length;
 }
-client.mm = mapMembers();
+client.mm = mapMembers;
 // -- Function From Remix Bot --//
 async function mapMembers(){
   return new Promise(async res => {
