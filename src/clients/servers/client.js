@@ -25,6 +25,10 @@ client.aliases = new Collection();
 client.memberMap = new Map();
 client.eepy = sleep
 this.userCache = [];
+client.memberCount = (server) => {
+  if (typeof server === "object") server = server.id;
+  return client.memberMap.get(server).length;
+}
 client.mm = mapMembers();
 // -- Function From Remix Bot --//
 async function mapMembers(){
