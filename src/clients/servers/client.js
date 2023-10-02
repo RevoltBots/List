@@ -26,11 +26,11 @@ client.eepy = sleep
 this.userCache = [];
 client.memberCount = (server) => {
   if (typeof server === "object") server = server.id;
-  return client.memberMap.get(server).length;
+  return client.memberMap.get(server)?.length;
 }
 client.mm = mapMembers;
 // -- Function From Remix Bot --//
-async function mapMembers(){
+function mapMembers() {
   return new Promise(async res => {
     const evaluate = (data) => {
       data = data.map(v => v.value);
@@ -40,16 +40,12 @@ async function mapMembers(){
         members = members.members;
         const server = members[0].server.id;
         members = members.map(m => m.id.user);
-        client.memberMap.set(server, members);
-        users.forEach(user => {
-          if (client.userCache.findIndex(e => e.id === user.id) !== -1) return;
-          client.userCache.push({ id: user.id, name: user.username, discrim: user.discriminator })
-        });
+        this.memberMap.set(server, members);
       });
     }
 
     const promises = [];
-    const servers = client.servers;
+    const servers = this.servers;
     console.log("Started mapping server members");
     for (let i = 0; i < servers.length; i++) {
       if (i % 30 === 0 && i !== 0) {
