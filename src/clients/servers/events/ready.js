@@ -11,6 +11,6 @@ module.exports = {
       },
     });
 
-    this.mm();
+    client.mm();
   },
 };
