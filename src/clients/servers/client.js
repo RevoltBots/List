@@ -5,7 +5,6 @@ const { join } = require("node:path");
 const client = new Client();
 const fs = require("node:fs");
 const path = require("node:path");
-global.sclient = client;
 var sleep = require('sleep');
 
 //-Events-//
@@ -71,5 +70,6 @@ for (const cfile of getFiles("commands")) {
   if (command.aliases)
     command.aliases.forEach((alias) => client.aliases.set(alias, command.name));
 }
+global.sclient = client;
 client.loginBot(config.clients.servers.token);
 
