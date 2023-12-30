@@ -150,7 +150,7 @@ router.post("/bots/:id/testing", async (req, res) => {
     description: `Testing session channel to test ${bot.name}.`,
    });
   let cat = [];
-  server.categories.map(d => { if (d.id === "01GX1R43Q03JF7SMBKRW71F7EF") d.channels.push(createdChannel._id); cat.push(d) });
+  server.categories.map(d => { if (d.id === "01HJWT5WM5NCVRK7ZVWZGKBNRP") d.channels.push(createdChannel._id); cat.push(d) });
   server.edit({ categories: cat }); 
   await client.api
       .post(`/channels/${createdChannel._id}/messages`, {
@@ -209,7 +209,7 @@ router.post("/bots/:id/deny", async (req, res) => {
   bot.deniedOn = Date.now();
   bot.status = "denied";
   await bot.save().then(async () => {
-    let testing = client.servers.get("01GX1QRSHEA8NE8WCGHEPN3S19");
+    let testing = client.servers.get("01HJWT1QZYN9GNWTD0BH8YEZBG");
     console.log(testing)
     let target = await testing.fetchMember(bot.id);
     console.log(target)
