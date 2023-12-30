@@ -25,7 +25,7 @@ client.memberMap = new Map();
 client.eepy = sleep
 this.userCache = [];
 client.memberCount = (server) => {
-  if (typeof server === "object") server = server.id;
+  if (typeof server === "object") server = server._id;
   return client.memberMap.get(server)?.length;
 }
 client.mm = mapMembers;
@@ -38,7 +38,7 @@ function mapMembers() {
         if (!members) return;
         const users = members.users;
         members = members.members;
-        const server = members[0].server.id;
+        const server = members[0].server._id;
         members = members.map(m => m.id.user);
         this.memberMap.set(server, members);
       });
@@ -46,15 +46,17 @@ function mapMembers() {
 
     const promises = [];
     const servers = this.servers;
+    console.log(servers)
+
     console.log("Started mapping server members");
     for (let i = 0; i < servers.length; i++) {
-      if (i % 30 === 0 && i !== 0) {
+      if (i % 15 === 0 && i !== 0) {
         evaluate(await Promise.allSettled(promises));
         console.log("Mapped " + Math.round((i / servers.length * 100)) + "%")
         promises.length = 0;
-        await sleep.sleep(2);
+        await sleep.sleep(5);
       }
-      await sleep.sleep(2);
+      await sleep.sleep(5);
       promises.push(servers[i].fetchMembers());
     }
     if (promises.length !== 0) evaluate(await Promise.allSettled(promises));

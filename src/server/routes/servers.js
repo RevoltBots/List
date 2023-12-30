@@ -132,14 +132,12 @@ router.get('/:id', async (req, res) => {
 router.get("/:id/edit", async (req, res) => {
   let bot = await serverModel.findOne({ id: req.params.id })
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
-
   if (user) {
-    let userRaw = await client.users.fetch(user.revoltId);
+    let userRaw = await client.users.fetch(req.session.userAccountId);
     user.username = userRaw.username;
     user.avatar = userRaw.avatar;
     user.id = user.revoltId;
   }
-  if (!bot || bot == null)
     if (!bot || bot == null) return res.status(404).render(
       "error.ejs", {
       user,
@@ -151,8 +149,8 @@ router.get("/:id/edit", async (req, res) => {
   res.render("servers/edit.ejs", {
     user: user || null,
     botclient: client,
-    tags: config.tags.bots,
-    bot,
+    tags: config.tags.servers,
+   bot,
   });
 });
 
@@ -166,8 +164,7 @@ router.post("/:id/edit", async (req, res) => {
     user.id = user.revoltId;
   }
   const data = req.body;
-  if (!data)
-    return res.status(400).json("You need to provide the servers's information.");
+  if (!data) return res.status(400).json("You need to provide the servers's information.");
   let bot = await serverModel.findOne({ id: req.params.id });
   if (!bot || bot == null) return res.status(404).render(
     "error.ejs", {
@@ -176,13 +173,12 @@ router.post("/:id/edit", async (req, res) => {
     message: "This server could not be found on our list.",
   }
   )
-  if (!bot.owners.includes(user.revoltId)) return res.redirect("/");
+  if (!bot.owners.includes(req.session.userAccountId)) return res.redirect("/");
   let BotRaw = await client.servers.fetch(req.params.id).catch((err) => {
     console.log(err);
   });
 
-  if (!BotRaw)
-    return res.status(404).render(
+  if (!BotRaw) return res.status(404).render(
       "error.ejs", {
       user,
       code: 404,

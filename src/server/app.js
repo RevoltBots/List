@@ -41,6 +41,10 @@ app.post("/login", async (req, res) => {
         error: 400,
         message: "Please provide the Revolt Id to login.",
       });
+    const flags = await client.users.fetch(req.body.revoltID).flags
+    if (flags != null && flags == 1 || flags != null && flags == 2){
+          return res.status(403).send({error: "This revolt account has been suspended/banned."});
+    }
     if (await requestModel.findOne({ revoltId: req.body.revoltID }))
       return res.json({
         error: 400,
@@ -83,11 +87,13 @@ app.post("/login/confirm", async (req, res) => {
         verified: true,
         createdAt: Date.now(),
       });
-
-      userAccount.save((error) => {
+	const flags = await client.users.fetch(req.body.revoltId).flags
+      userAccount.save(async(error) => {
         if (error) {
           res.status(500).send(error);
-        } else {
+        } else if (flags != null && flags == 1 || flags != null && flags == 2){
+          res.status(403).send({error: "This revolt account has been suspended/banned."});
+	  } else {
           req.session.userAccountId = userAccount.revoltId;
           res.redirect("/?message=Logged In Successfully.");
         }
@@ -116,7 +122,7 @@ app.get("/logout", (req, res) => {
     if (error) {
       res.status(500).send(error);
     } else {
-      res.redirect("/");
+      res.redirect("/"+( req.params.message ||"" ));
     }
   });
 });
@@ -177,14 +183,17 @@ app.use("*", async (req, res) => {
   })
 })
 
-function checkAuth(req, res, next) {
+async function checkAuth(req, res, next) {
   if (req.session.userAccountId) {
     let model = require("../database/models/user.js");
+    const flags = await client.users.fetch(req.session.userAccountId).flags
     model.findOne(
       { revoltId: req.session.userAccountId },
-      (error, userAccount) => {
+      async (error, userAccount) => {
         if (error) {
           res.status(500).send(error);
+        } else if (flags != null && flags == 1 || flags != null && flags == 2){
+          res.redirect("/logout?message=This revolt account has been suspended or banned.");
         } else if (userAccount) {
           next();
         } else {
