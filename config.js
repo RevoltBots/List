@@ -58,7 +58,7 @@ module.exports = {
   },
   servers: {
     main: "01GQ14WC58C8AXCWNJQBFDZNT3",
-    testing: "01GX1QRSHEA8NE8WCGHEPN3S19",
+    testing: "01HJWT1QZYN9GNWTD0BH8YEZBG",
   },
   roles: {
     femboy: "01G5DNNE0QR1ED8Q1E2BZ5Y3AT",
