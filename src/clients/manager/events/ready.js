@@ -1,6 +1,7 @@
 const model = require("../../../database/models/loginRequest");
 
 module.exports = {
+  once: true,
   name: "ready",
   async execute(client) {
     console.info(`[INFO] ${client.user.username} is logged in and ready.`);
