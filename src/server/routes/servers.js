@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
-    let userRaw = await ServerClient?.users.fetch(user.revoltId);
+    let userRaw = await global.sclient?.users.fetch(user.revoltId);
     user.username = userRaw.username;
     user.avatar = userRaw.avatar;
   }
@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 router.get("/submit", async (req, res) => {
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
-    let userRaw = await ServerClient.users.fetch(user.revoltId);
+    let userRaw = await global.sclient.users.fetch(user.revoltId);
     user.username = userRaw.username;
     user.avatar = userRaw.avatar;
   }
@@ -115,7 +115,7 @@ router.get('/:id', async (req, res) => {
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
-    let userRaw = await ServerClient.users.fetch(user.revoltId);
+    let userRaw = await global.sclient.users.fetch(user.revoltId);
     user.username = userRaw.username;
     user.avatar = userRaw.avatar;
   }
@@ -126,7 +126,8 @@ router.get('/:id', async (req, res) => {
     message: "This server could not be found on our list.",
   }
   )
-  res.render("servers/view.ejs", { moment, user, servers, ServerClient })
+  cli = global.sclient
+  res.render("servers/view.ejs", { moment, user, servers,cli })
 })
 
 router.get("/:id/edit", async (req, res) => {
@@ -238,7 +239,7 @@ router.post("/submit", async (req, res) => {
     user.avatar = userRaw.avatar;
   }
   if (await serverModel.findOne({ id: data.serverid })) return res.status(409).render("error.ejs", { user, code: 409, message: "This server has already been added to the list." })
-  let serverRaw = await ServerClient.servers.fetch(data.serverid).catch((err) => { console.log(err) });
+  let serverRaw = await global.sclient.servers.fetch(data.serverid).catch((err) => { console.log(err) });
   if (!serverRaw) return res.status(400).render("error.ejs", { user, code: 400, message: "The provided server couldn't be found on Revolt" })
   if (data.owners) {
     let owners = [];
@@ -252,7 +253,7 @@ router.post("/submit", async (req, res) => {
   if (data.owners) {
     data.owners.forEach(async (owner) => {
       try {
-        await ServerClient.users.get(owner);
+        await global.sclient.users.get(owner);
       } catch (e) {
         return res.status(409).render(
           "error.ejs", {
@@ -282,7 +283,7 @@ router.post("/submit", async (req, res) => {
   })
     .then(async () => {
       res.status(201).json({ message: "Added to list!", code: "OK" });
-      let logs = ServerClient.channels.get(config.channels.weblogs);
+      let logs = global.sclient.channels.get(config.channels.weblogs);
       logs.sendMessage(
         `<@${req.session.userAccountId}> has submitted **${serverRaw.name}** to the list.\n<https://revoltbots.org/servers/${data.serverid}>`
       );
