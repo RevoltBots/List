@@ -9,8 +9,7 @@ router.get("/v1", async (req, res) => {
 });
 
 router.get("/v1/bots/:id", async (req, res) => {
-  let model = require("../../database/models/bot");
-  const rs = await model.findOne({ id: req.params.id });
+  const rs = await global.botModel.findOne({ id: req.params.id });
   if (!rs)
     return res
       .status(404)
@@ -24,21 +23,19 @@ router.post("/v1/bots/stats", async (req, res) => {
   const key = req.headers.authorization;
   if (!key) return res.status(401).json({ json: "Please provides a API Key." });
 
-  let bot = await botModel.findOne({ apikey: key });
+  let bot = await global.botModel.findOne({ apikey: key });
   if (!bot)
     return res.status(404).json({
       message:
         "This bot is not on our list, or you entered an invaild API Key.",
     });
 
-  const servers = req.body.server_count || req.header("server_count");
+  const servers = req.body.servers || req.headers.servers;
 
-  if (!servers)
-    return res.status(400).json({ message: "Please provide a server count." });
-
-  bot.servers = servers;
+  if (!servers) return res.status(400).json({ message: "Please provide a server count." });
   console.log(servers)
-  await bot.save().catch(() => null);
+  bot.servers = parseInt(servers);
+  await bot.save().catch((err) => console.log(err));
   return res.json({ message: "Successfully updated." });
 });
 

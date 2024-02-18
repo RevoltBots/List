@@ -25,12 +25,13 @@ client.aliases = new Collection();
 client.memberMap = new Map();
 client.eepy = sleep
 this.userCache = [];
+/*
 client.memberCount = (server) => {
   if (typeof server === "object") server = server._id;
   return client.memberMap.get(server)?.length;
 }
+
 client.mm = mapMembers;
-// -- Function From Remix Bot --//
 function mapMembers() {
   return new Promise(async res => {
     const evaluate = (data) => {
@@ -65,6 +66,7 @@ function mapMembers() {
     res();
   });
 }
+*/
 const getFiles = (path) =>
   readdirSync(join(__dirname, path)).filter((file) => file.endsWith(".js"));
 for (const cfile of getFiles("commands")) {
