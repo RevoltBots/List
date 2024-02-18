@@ -32,7 +32,8 @@ router.post("/v1/bots/stats", async (req, res) => {
 
   const servers = req.body.servers || req.headers.servers;
 
-  if (!servers) return res.status(400).json({ message: "Please provide a server count." });
+  if (!Number(servers)) return res.status(400).json({ message: "Please provide a valid server count." });
+  if (!servers || Number(servers) <= 0) return res.status(400).json({ message: "Please provide a valid server count." });
   console.log(servers)
   bot.servers = parseInt(servers);
   await bot.save().catch((err) => console.log(err));
