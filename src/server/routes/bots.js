@@ -223,6 +223,15 @@ router.get("/:id", async (req, res) => {
     id: req.params.id,
     status: "inprogress",
   });
+  let found = (await botModel.findOne({ id: req.params.id })) ||
+    (await botModel.findOne({
+      vanity: { $regex: `^${req.params.id}$`, $options: "i" },
+      certified: true,
+    }));
+  let denied = await botModel.findOne({
+    id: req.params.id,
+    status: "denied",
+  });
   let isStaff = await userModel.findOne({
     revoltId: req.session.userAccountId,
     isStaff: true,
@@ -236,7 +245,7 @@ router.get("/:id", async (req, res) => {
   }
   if (req.params.id == "search")
     return res.render("bexplore.ejs", { user: user, bots: null, error: null });
-  if (!approved && (awaiting || inprogress ) && !isStaff && !(awaiting||inprogress).owners.includes(req.session.userAccountId))
+  if (!found || !approved && (awaiting || inprogress || denied) && !isStaff && !(awaiting||inprogress||denied).owners.includes(req.session.userAccountId))
     return res.status(404).render(
       "error.ejs", {
       user,
@@ -252,7 +261,7 @@ router.get("/:id", async (req, res) => {
     "Invisible": "#A5A5A5",
     "Offline": "#A5A5A5"
   }
-  let bot = awaiting || approved || inprogress;
+  let bot = awaiting || approved || inprogress || denied;
   const marked = require("marked");
   const description = marked.parse(bot?.description);
   try {
