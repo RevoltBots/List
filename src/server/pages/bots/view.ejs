@@ -73,8 +73,8 @@
                      <% if (["01HPAFAVQM01BE2PN2A7RDTQXJ"].includes(bot.id)) { %>
                        <i style="color: pink" class="fa-solid fa-wrench" title="Boten Anna"></i>
                        <% } %>
-                       <% if (bot.tags[0].includes("Chatbot")) { %>
-                         <i style="color: cyan" class="fa-solid fa-wrench" title="AI Powered"></i>
+                       <% if (bot.tags[0].includes("Chatbot") && !["01HPAFAVQM01BE2PN2A7RDTQXJ"].includes(bot.id)) { %>
+                         <i style="color: cyan" class="fa-solid fa-wrench" title="AI Chatbot"></i>
                          <% } %>
 
 
