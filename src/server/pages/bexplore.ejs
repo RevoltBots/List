@@ -63,6 +63,13 @@
                 <% if (voted[i].tags[0].includes("NSFW")) { %>
                   <i style="color: yellow" class="fa-solid fa-triangle-exclamation" title="NSFW Bot"></i>
                   <% } %>
+                    <% if (["01HPAFAVQM01BE2PN2A7RDTQXJ"].includes(voted[i].id)) { %>
+                       <i style="color: pink" class="fa-solid fa-wrench" title="Boten Anna"></i>
+                       <% } %>
+                       <% if (voted[i].tags[0].includes("Chatbot") && !["01HPAFAVQM01BE2PN2A7RDTQXJ"].includes(voted[i].id)) { %>
+                         <i style="color: cyan" class="fa-solid fa-wrench" title="AI Chatbot"></i>
+                         <% } %>
+
           </b>
           <br>
           <span style="font-size:15px; font-weight:normal;"><i class="fa-solid fa-server"></i> <%= voted[i].servers || "N/A" %> • <i class="fa-solid fa-check-to-slot"></i> <%= voted[i].monthlyVotes %></span>
@@ -98,7 +105,14 @@
               <% } %>
                 <% if (added[i].tags[0].includes("NSFW")) { %>
                   <i style="color: yellow" class="fa-solid fa-triangle-exclamation" title="NSFW Bot"></i>
-                  <% } %>
+                   <% } %>
+                     <% if (["01HPAFAVQM01BE2PN2A7RDTQXJ"].includes(added[i].id)) { %>
+                       <i style="color: pink" class="fa-solid fa-wrench" title="Boten Anna"></i>
+                       <% } %>
+                       <% if (added[i].tags[0].includes("Chatbot") && !["01HPAFAVQM01BE2PN2A7RDTQXJ"].includes(added[i].id)) { %>
+                         <i style="color: cyan" class="fa-solid fa-wrench" title="AI Chatbot"></i>
+                         <% } %>
+
           </b><!-- might add it back if we add the servers bot ok-->
           <br>
           <span style="font-size:15px; font-weight:normal;"><i class="fa-solid fa-server"></i> <%= added[i].servers || "N/A" %> • <i class="fa-solid fa-check-to-slot"></i> <%= added[i].monthlyVotes %>
