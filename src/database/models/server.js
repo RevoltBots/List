@@ -17,6 +17,10 @@ let app = mongoose.Schema({
     type: String,
     required: true
   },
+  vanity: {
+    type: String,
+    required: false
+  },
   iconURL: {
     type: String,
     required: true
@@ -44,6 +48,14 @@ let app = mongoose.Schema({
   tags: {
     type: Array,
     required: true
+  },
+  votes: {
+    type: Number,
+    default: 0
+  },
+  monthlyVotes: {
+    type: Number,
+    default: 0
   },
   reviews: {
     type: Array,

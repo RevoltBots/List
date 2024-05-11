@@ -39,7 +39,7 @@
                             <i style="color: #FF4655" class="fa-solid fa-badge-check" title="Certified Developer"></i>
                             <% } %>
                           <% if (fetched_user.badges.includes("femboy")) { %>
-                            <i style="color: #FF00FF" class="fa-solid fa-badge-check" title="Certified Femboy"></i>
+                            <i style="color: pink" class="fa-solid fa-badge-check" title="@A2"></i>
                             <% } %>
                             <% if (fetched_user.badges.includes("contributor")) { %>
                               <i class="fa-solid fa-sparkles" style="font-size: 25px; color: #F38BF1" title="RBL Contributor"></i>
@@ -103,6 +103,12 @@
             <%= b.name %>
             <% if (b.certified) { %>
               <i style="color: #FF4655" class="fa-solid fa-badge-check" title="Certified Bot"></i>
+              <% } %>
+            <% if (b.tags.includes("NSFW")) { %>
+              <i style="color: yellow" class="fa-solid fa-warning" title="NSFW Bot"></i>
+              <% } %>
+            <% if (b.tags.includes("Chatbot")) { %>
+              <i style="color: red" class="fa-solid fa-wrench" title="Certified Bot"></i>
               <% } %>
           </b>
           <br>

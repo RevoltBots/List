@@ -4,7 +4,7 @@ const serverModel = require("../../database/models/server");
 const userModel = require("../../database/models/user");
 const reportModel = require("../../database/models/report");
 const moment = require("moment");
-
+const ms = require("ms");
 router.get('/', async (req, res) => {
   let servers = await serverModel.find({
     banned: false
@@ -111,7 +111,7 @@ router.get("/tags/:tag", async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  let servers = await serverModel.findOne({ id: req.params.id });
+  let servers = await serverModel.findOne({ id: req.params.id }) || await serverModel.findOne({ vanity: req.params.id.toLowerCase() })
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -131,7 +131,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.get("/:id/edit", async (req, res) => {
-  let bot = await serverModel.findOne({ id: req.params.id })
+  let bot = await serverModel.findOne({ id: req.params.id }) || await serverModel.findOne({ vanity: req.params.id.toLowerCase() })
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
     let userRaw = await client.users.fetch(req.session.userAccountId);
@@ -166,7 +166,7 @@ router.post("/:id/edit", async (req, res) => {
   }
   const data = req.body;
   if (!data) return res.status(400).json("You need to provide the servers's information.");
-  let bot = await serverModel.findOne({ id: req.params.id });
+  let bot = await serverModel.findOne({ id: req.params.id }) || await serverModel.findOne({vanity: req.params.id.toLowerCase()});
   if (!bot || bot == null) return res.status(404).render(
     "error.ejs", {
     user,
@@ -195,7 +195,6 @@ router.post("/:id/edit", async (req, res) => {
     });
     data.owners = owners;
   }
-  console.log(BotRaw)
   if (data.owners) {
     data.owners.forEach(async (owner) => {
       try {
@@ -219,8 +218,22 @@ router.post("/:id/edit", async (req, res) => {
   if (data.invite) bot.vanity = data.vanity;
   if (data.description) bot.description = data.desc;
   if (data.shortDesc) bot.description = data.shortDesc;
+  if (data.vanity){
+  let vanity = await serverModel.findOne({ vanity: data.vanity })
+      if (vanity !== null && vanity.id !== BotRaw.id) return res.status(404).render(
+          "error.ejs", {
+             user,
+             code: 404,
+             message: "The vanity you chose for this server is in use already!",
+          }
+      )
+
+}
+
   await bot.save().then(async () => {
-    res.status(201).json({ message: "Successfully Edited", code: "OK" });
+    return res.redirect(
+    `/servers/${req.params.id}?success=true&body=You edited this server successfully.`
+   );
     let logs = client.channels.get(config.channels.weblogs);
     logs.sendMessage(
       `<\\@${req.session.userAccountId}> edited **${BotRaw.name}**.\n<https://revoltbots.org/servers/${req.params.id}>`
@@ -265,7 +278,10 @@ router.post("/submit", async (req, res) => {
       }
     });
   }
+  if (await serverModel.findOne({vanity: data.vanity})) {
+	return res.status(400).render().json({ message: "Vanity Already Exists!", code: "ERROR" });
 
+  }
   await serverModel.create({
     id: data.serverid,
     name: serverRaw.name,
@@ -279,6 +295,7 @@ router.post("/submit", async (req, res) => {
     invite: data.invite || null,
     tags: data.tags,
     owners: data.owners,
+    vanity: data.vanity || null,
     submittedOn: Date.now(),
   })
     .then(async () => {
@@ -289,6 +306,34 @@ router.post("/submit", async (req, res) => {
       );
     });
 });
+router.get("/:id/vote", async (req, res) => {
+  let bot = await serverModel.findOne({ id: req.params.id }) ||
+    (await serverModel.findOne({
+      vanity: { $regex: `^${req.params.id}$`, $options: "i" },
+    }));
+  let user = await userModel.findOne({ revoltId: req.session.userAccountId });
+
+  if (!bot || bot == null)
+    return res.status(409).render(
+      "error.ejs", {
+      user,
+      code: 404,
+      message: "This server could not be found on our list."
+    });
+
+  if (user) {
+    let userRaw = await client.users.fetch(user.revoltId);
+    user.username = userRaw.username;
+    user.avatar = userRaw.avatar;
+    user.id = user.revoltId;
+  }
+
+  res.render("servers/vote.ejs", {
+    user: user || null,
+    bot,
+  });
+});
+
 
 router.post("/:id/vote", async (req, res) => {
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
@@ -332,22 +377,22 @@ router.post("/:id/vote", async (req, res) => {
     date: D,
     time,
   });
-  await botModel.findOneAndUpdate(
+  await serverModel.findOneAndUpdate(
     { id: req.params.id },
     { $inc: { votes: 1, monthlyVotes: 1 } }
   );
-  const BotRaw = await client.users.fetch(bot.id);
+  const BotRaw = await client.servers.fetch(bot.id);
 
   const logs = client.channels.get(config.channels.votelogs);
   if (logs)
     logs
       .sendMessage(
-        `<\\@${req.session.userAccountId}> voted for **${BotRaw.username}**.\n<https://revoltbots.org/servers/${BotRaw._id}>`
+        `<\\@${req.session.userAccountId}> voted for **${BotRaw.name}**.\n<https://revoltbots.org/servers/${BotRaw._id}>`
       )
       .catch(() => null);
 
   return res.redirect(
-    `/bots/${req.params.id}?success=true&body=You voted successfully. You can vote again after 12 hours.`
+    `/servers/${req.params.id}?success=true&body=You voted successfully. You can vote again after 12 hours.`
   );
 });
 
@@ -694,3 +739,9 @@ function checkAuth(req, res, next) {
 }
 
 module.exports = router;
+function canUserVote(x) {
+  const left = x.time - (Date.now() - x.date),
+    formatted = ms(left, { long: true });
+  if (left <= 0 || formatted.includes("-")) return { status: true };
+  return { status: false, left, formatted };
+}

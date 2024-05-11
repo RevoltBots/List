@@ -44,7 +44,7 @@
           <hr>
           </hr>
           <p style="color:white">
-           &nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i> <b>Votes</b>: <%= servers.votes %>&nbsp;&nbsp;|&nbsp;&nbsp;
+           &nbsp;&nbsp;<i class="fa-solid fa-check-to-slot"></i> <b>Votes</b>: <%= servers.votes || 0 %> &nbsp;&nbsp;|&nbsp;&nbsp;
             <i class="fa-solid fa-clock"></i> <b>Submitted</b>: <%= new Date(servers.submittedOn).toLocaleDateString() %>
           </p>
           <hr>
