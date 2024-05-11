@@ -120,7 +120,7 @@
     <% for(let i=0; i < bot.owners.length; i++) { %>
       <% client.users.fetch(bot.owners[i]).then(i =>{ console.log(i)}) %>
 	 <a class="owner" href="/user/<%= bot.owners[i] %>"><img class="rounded-circle" style="width: 45px; height: 45px;" src="https://autumn.revolt.chat/avatars/<%= botclient.users.get(bot.owners[i]).avatar._id %>/<%= botclient.users.get(bot.owners[i]).avatar.filename %>.webp">&nbsp;<b style="font-size: 20px;">
-        <%= botclient.users.get(bot.owners[i]).username || "Unknown User" %>
+        <%= botclient.users.get(bot.owners[i]).username || "" %>
       </b></a>&nbsp;&nbsp;
     <%- console.log(bot) %>
 
@@ -132,12 +132,12 @@
     <% for(let i=0; i < bot.owners.length; i++) { %>
       <% client.users.fetch(bot.owners[i]).then(i =>{ console.log(i)}) %>
     <a class="owner" href="/user/<%= bot.owners[i] %>"><img class="rounded-circle idk" style="width: 45px; height: 45px;" src="https://autumn.revolt.chat/avatars/<%= botclient.users.get(bot.owners[i]).avatar._id %>/<%= botclient.users.get(bot.owners[i]).avatar.filename %>">&nbsp;<b style="font-size: 20px;">
-        <%= botclient.users.get(bot.owners[i]).username || "Unknown User" %>
+        <%= botclient.users.get(bot.owners[i]).username || "" %>
       </b></a>
     <% } %>
     <% } %><br>
     <% } catch(err) { %>
-    <a class="owner" href="/user/<%= bot.owners[0] %>">&nbsp;<b style="font-size: 20px;">Unknown User</b></a>
+    <a class="owner" href="/user/<%= bot.owners[0] %>">&nbsp;<b style="font-size: 20px;"> </b></a>
     <%  } %>
     <hr>
   </div>
