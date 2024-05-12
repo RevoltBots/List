@@ -127,12 +127,7 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/server", (req, res) => res.redirect("https://rvlt.gg/kmZBZ6h1"));
-
-app.get("/downloads/windows", function (req, res) {
-  const file = path.join(__dirname, "/static/downloads/rblwindows.exe");
-  res.download(file);
-});
+app.get("/server", (req, res) => res.redirect("https://rvlt.gg/eRWNx4wh"));
 
 app.get("/downloads", async (req, res) => {
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
