@@ -32,7 +32,7 @@
     <h3 style="color:white;margin-top:25px"><b>Server Invite</b></h3>
     <input type="url" class="inputField" placeholder="&nbsp;Ex. https://rvlt.gg/kmZBZ6h1" value="<%= bot.invite %>" name="invite" autocomplete="off"><br>
     <h3 style="color:white;margin-top:25px"><b>Server Vanity</b></h3>
-    <input type="text" class="inputField" placeholder="&nbsp;rbl" value="<%= (bot.vanity || bot.id) %>" name="vanity" autocomplete="off"><br>
+    <input type="text" class="inputField" placeholder="&nbsp;<%= (bot.vanity || bot.id) %>" value="<%= bot.vanity || bot.id %>" name="vanity" autocomplete="off"><br>
     <% if (user.revoltId === bot.owners[0]) { %>
     <h3 style="color:white;margin-top:25px"><b>Other Owners</b></h3>
     <input type="text" class="inputField" placeholder="&nbsp;Ids sepreated by space (must be in our server)" value="<%= bot.owners.slice(1).join(" ") %>" name="owners" autocomplete="off"><br>

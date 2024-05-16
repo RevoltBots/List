@@ -218,9 +218,9 @@ router.post("/:id/edit", async (req, res) => {
   if (data.invite) bot.vanity = data.vanity;
   if (data.description) bot.description = data.desc;
   if (data.shortDesc) bot.description = data.shortDesc;
-  if (data.vanity){
+  if (data.vanity != "" || data.vanity !== undefined){
   let vanity = await serverModel.findOne({ vanity: data.vanity })
-      if (vanity !== null && vanity.id !== BotRaw.id) return res.status(404).render(
+      if (vanity !== null && vanity.id !== BotRaw._id) return res.status(404).render(
           "error.ejs", {
              user,
              code: 404,

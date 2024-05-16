@@ -166,25 +166,27 @@
   </h5>
 
   <% if (user && !bot.owners.includes(user.revoltId) && !bot.reviews.find(e=> e.revoltId === user.revoltId)) { %>
-    <form action="../../../bots/<%= bot.id %>/review" method="POST">
+   <span form action="../../../bots/<%= bot.id %>/review" method="POST">
       <div class="row"
         style="width: 100%; background-color:#47122b; height: 200px; border-radius: 8px; margin-bottom: 25px; ">
         <img style="margin-left: 12px; margin-top: 20px; border-radius: 50%;" width="60" height="60"
           src="https://autumn.revolt.chat/avatars/<%= user?.avatar._id %>/<%= user?.avatar.filename %>" alt="Avatar"
-          class="avatar">
-          <span style="font-size: 17px; margin-left: 6px; margin-top: 13px"><%= user?.username %></span>
-          <div class="rating" style="margin-left: -147px; margin-top: 30px;">
+          class="avatar"><span>
+          <span style="font-size: 20px; margin-left: 6px; margin-top: 13px"><%= (user?.username||"Unknown")+"#" +(user.discriminator || "0000") %></span><span>
+            <div class="rating" style="margin-left: -70px; margin-top: 80px;">
             <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> 
             <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> 
             <input type="radio" name="rating" value="3" id="3" checked><label for="3">☆</label> 
             <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> 
             <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
           </div>
-        <textarea maxlength="300" name="review" spellcheck="true" 
-          style="margin-top: -25px; margin-left: 80px; margin-right: 20px; border-radius: 7px; background-color: #702849d1; border-color: transparent; color: white; width: 90%; height: 65px; resize: none;"
+	<span>
+
+        <div class="row" style="width:100%" margin-top="20px"><textarea maxlength="300" name="review" spellcheck="true" 
+          style="margin-top: -55px; margin-left: 60px; margin-right: 20px; border-radius: 7px; background-color: #702849d1; border-color: transparent; color: white; width: 80%; height: 60px; resize: none;"
           placeholder="Write a review..." required></textarea>
         <button id="submitReview"
-          style="margin-bottom: 10px; margin-left: 80px; background-color: #702849d1; border-radius: 7px; border-color: transparent; color: white; width: auto; height: 35px; resize: none;"
+          style="margin-bottom: 10px; margin-left: 60px; background-color: #702849d1; border-radius: 7px; border-color: transparent; color: white; width: auto; height: 35px; resize: none;"
           class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit</button>
       </div>
     </form>
@@ -208,14 +210,13 @@
       <% } %>
 
       <% bot.reviews.sort((a,b) => b.createdAt - a.createdAt).filter(e => e.type === "review").map((review)=> { %>
-        <hr class="reviews_devider">
-
+        <hr class="reviews_divider">
         <div id="<%= review.revoltId %>" class="row"
           style="width: 100%; background-color:#47122b; height: auto; border-radius: 7px; margin-bottom: 15px;">
           <% const reviewUser = client.users.get(review.revoltId); %>
          <% if (!reviewUser) return client.users.fetch(review.revoltId).then(i =>{ console.log(i)}) %>
             <img style="margin-top: 20px; margin-left: 20px;border-radius: 50%;" width="50" height="50"
-              src="https://autumn.revolt.chat/avatars/<%= reviewUser?.avatar?._id %>/<%= reviewUser?.avatar?.filename %>" alt="Avatar"
+              src="https://autumn.revolt.chat/avatars/<%= ( reviewUser?.avatar?._id || client.user.avatar?._id) %>/<%= (reviewUser?.avatar?.filename || client.user.avatar.filename) %>" alt="Avatar"
               class="avatar">
             <div style="margin-top: 13px;" class="col-sm">
               <a href="/user/<%= review?.revoltId %>" style="text-decoration: none; color: white;"><b>
@@ -427,7 +428,11 @@
         <% } %>
 
         <% }) %>
-          </div>
+          <div>
+        <div>
+        <div>
+        <div>
+        <div>
           </div>
           <div style="margin-top:175px;"></div><hr>
           <%- include("../parts/footer.ejs") %>

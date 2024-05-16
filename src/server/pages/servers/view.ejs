@@ -89,7 +89,7 @@
         <div class="row"
           style="width: 100%; background-color:#47122b; height: 200px; border-radius: 8px; margin-bottom: 25px; ">
           <img style="margin-left: 12px; margin-top: 20px; border-radius: 50%;" width="60" height="60"
-            src="https://autumn.revolt.chat/avatars/<%= user.avatar._id %>/<%= user?.avatar.filename %>" alt="Avatar"
+            src="https://autumn.revolt.chat/avatars/<%= user?.avatar?._id %>/<%= user?.avatar.filename %>" alt="Avatar"
             class="avatar">
             <span style="font-size: 17px; margin-left: 6px; margin-top: 13px"><%= user?.username %></span>
             <div class="rating" style="margin-left: -147px; margin-top: 30px;">
@@ -110,7 +110,7 @@
       <% } else if (user && servers.owners.includes(user.revoltId)) { %>
         <div class="row" style="width: 100%; background-color:#47122b; height: auto; border-radius: 8px; margin-bottom: 25px;">
           <p style="font-size: 20px; margin-top: 10px; padding-left: 10px; padding-right:10px;">
-            <i style="font-size: 20px; margin-top: 5px; color:rgb(41, 157, 180);" class="fa-solid fa-circle-info"></i> Hello <%- user.username %>, obviously you can't review your own Server. However you can respond to reviews by clicking <i style="color:#ff537e" class="fa-solid fa-ellipsis-h"></i> on the review and then clicking <i style="color:#ff537e" class="fa-solid fa-reply"></i> to reply.
+            <i style="font-size: 20px; margin-top: 5px; color:rgb(41, 157, 180);" class="fa-solid fa-circle-info"></i> Hello <%- user?.username %>, obviously you can't review your own Server. However you can respond to reviews by clicking <i style="color:#ff537e" class="fa-solid fa-ellipsis-h"></i> on the review and then clicking <i style="color:#ff537e" class="fa-solid fa-reply"></i> to reply.
           </p>
         </div>
       <% } %>
@@ -133,15 +133,12 @@
             style="width: 100%; background-color:#47122b; height: auto; border-radius: 7px; margin-bottom: 15px;">
             <% ServerClient.users.fetch(review.revoltId).then(i =>{ console.log(i)}) %>
             <% let reviewUser = ServerClient.users.get(review.revoltId) %>
-              <% console.log(reviewUser) %>
-
-              <img style="margin-top: 20px; margin-left: 20px;border-radius: 50%;" width="50" height="50"
-                src="https://autumn.revolt.chat/avatars/<%= reviewUser.avatar._id %>/<%= reviewUser?.avatar?.filename %>" alt="Avatar"
+                <img style="margin-top: 20px; margin-left: 20px;border-radius: 50%;" width="50" height="50"
+                src="https://autumn.revolt.chat/avatars/<%= (reviewUser?.avatar?._id || ServerClient.user.avatar._id) %>/<%= (reviewUser?.avatar?.filename || ServerClient.user.avatar.filename) %>" alt="Avatar"
                 class="avatar">
-		<% console.log(review) %>
               <div style="margin-top: 13px;" class="col-sm">
                 <a href="/user/<%= review?.revoltId %>" style="text-decoration: none; color: white;"><b>
-                    <%= (reviewUser.username || "User#0000") %>
+                    <%= (reviewUser?.username || "User#0000") %>
                   </b> <a style="font-size: 15px; color: #888888; margin-left: 4px;">
                     <%= moment(review?.createdAt).startOf("minute").fromNow();  %>
                   </a></a>
