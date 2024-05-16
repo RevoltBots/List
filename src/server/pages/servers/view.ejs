@@ -131,9 +131,10 @@
 
         <div id="<%= review.revoltId %>" class="row"
           style="width: 100%; background-color:#47122b; height: auto; border-radius: 7px; margin-bottom: 15px;">
-          <% const reviewUser = client.users.get(review.revoltId); %>
+        <% ServerClient.users.fetch(review.revoltId).then(i =>{ console.log(i)}) %>
+          <% const reviewUser = ServerClient.users.get(review.revoltId); %>
             <img style="margin-top: 20px; margin-left: 20px;border-radius: 50%;" width="50" height="50"
-              src="https://autumn.revolt.chat/avatars/<%= reviewUser?.avatar?._id %>/<%= reviewUser?.avatar?.filename %>" alt="Avatar"
+                src="https://autumn.revolt.chat/avatars/<%= (reviewUser?.avatar?._id || ServerClient.user.avatar._id) %>/<%= (reviewUser?.avatar?.filename || ServerClient.user.avatar.filename) %>" alt="Avatar"
               class="avatar">
             <div style="margin-top: 13px;" class="col-sm">
               <a href="/user/<%= review?.revoltId %>" style="text-decoration: none; color: white;"><b>
