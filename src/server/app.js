@@ -41,8 +41,15 @@ app.post("/login", async (req, res) => {
         error: 400,
         message: "Please provide the Revolt Id to login.",
       });
-    const flags = await client.users.fetch(req.body.revoltID).flags
-    if (flags != null && flags == 1 || flags != null && flags == 2){
+
+   let userModel = require("../database/models/user");
+    const us = await userModel.findOne({revoltId: req.body.revoltID })
+    const userRaw = await client.users.fetch(req.body.revoltID);
+    if (userRaw.flags == 1 || userRaw.flags == 2 || us && us.isBanned == true){
+          if (!us.isBanned && userRaw.flags == 1 || !us.isBanned && user.flags == 2){
+		us.isBanned = true
+		us.save()
+          }
           return res.status(403).send({error: "This revolt account has been suspended/banned."});
     }
     if (await requestModel.findOne({ revoltId: req.body.revoltID }))
@@ -122,7 +129,7 @@ app.get("/logout", (req, res) => {
     if (error) {
       res.status(500).send(error);
     } else {
-      res.redirect("/"+( req.params.message ||"" ));
+      res.redirect("/?message="+( req.query.message ||"" ));
     }
   });
 });
@@ -151,20 +158,19 @@ const discordRouter = require("./routes/revurn.js");
 const docsRouter = require("./routes/docs.js")
 const teamRouter = require("./routes/team.js")
 const partnersRouter = require("./routes/partners.js")
-app.use("/", indexRouter);
-app.use("/panel", checkAuth, checkStaff, panelRouter);
-app.use("/api", apiRouter);
-app.use("/bots", botsRouter);
-app.use("/bot", botsRouter);
-app.use("/servers", serversRouter);
+app.use("/", checkBanned, indexRouter);
+app.use("/panel", checkBanned, checkAuth, checkStaff, panelRouter);
+app.use("/api", checkBanned, apiRouter);
+app.use("/bots", checkBanned, botsRouter);
+app.use("/bot", checkBanned, botsRouter);
+app.use("/servers", checkBanned, serversRouter);
 app.use("/server", checkAuth, checkBeta, serversRouter);
-app.use("/users", usersRouter);
-app.use("/user", usersRouter);
-app.use("/bot-rules", botRulesRouter);
-app.use("/revurn", discordRouter);
-app.use("/docs", docsRouter)
-app.use("/team", teamRouter)
-app.use("/partners", partnersRouter)
+app.use("/users", checkBanned, usersRouter);
+app.use("/user", checkBanned, usersRouter);
+app.use("/bot-rules", checkBanned, botRulesRouter);
+app.use("/docs", checkBanned, docsRouter)
+app.use("/team", checkBanned, teamRouter)
+app.use("/partners", checkBanned, partnersRouter)
 app.listen(config.port, () => {
   console.info(`[INFO] Running on port ` + config.port);
 });
@@ -181,23 +187,47 @@ app.use("*", async (req, res) => {
 async function checkAuth(req, res, next) {
   if (req.session.userAccountId) {
     let model = require("../database/models/user.js");
-    const flags = await client.users.fetch(req.session.userAccountId).flags
     model.findOne(
       { revoltId: req.session.userAccountId },
       async (error, userAccount) => {
         if (error) {
           res.status(500).send(error);
-        } else if (flags != null && flags == 1 || flags != null && flags == 2){
-          res.redirect("/logout?message=This revolt account has been suspended or banned.");
         } else if (userAccount) {
+	   if(userAccount.isBanned == true){
+	     res.redirect("/logout?message=The%20Account%20you%20logged%20in%20with%20has%20been%20banned!");
+	   }else{
           next();
-        } else {
+          }
+       } else {
           res.redirect("/login");
         }
       }
     );
   } else {
     res.redirect("/login");
+  }
+}
+async function checkBanned(req, res, next) {
+  if (req.session.userAccountId) {
+    let model = require("../database/models/user.js");
+    model.findOne(
+      { revoltId: req.session.userAccountId },
+      async (error, userAccount) => {
+        if (error) {
+          res.status(500).send(error);
+        } else if (userAccount) {
+	   if(userAccount.isBanned == true){
+	     res.redirect("/logout?message=The%20Account%20you%20logged%20in%20with%20has%20been%20banned!");
+	   } else{
+            return next();
+            }
+       } else {
+            return next();
+        }
+      }
+    );
+  } else {
+	return next();
   }
 }
 
@@ -272,6 +302,7 @@ function checkBeta(req, res, next) {
     res.redirect("/login");
   }
 }
+
 function generateLoginCode() {
   const letters = "abcdefghijklmnopqrstuvwxyz";
   let code = "";

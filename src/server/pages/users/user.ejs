@@ -24,55 +24,58 @@
         <div class="col-sm">
           <h2 style="color: white"><b>
               <%= fetched_user.name %>
-                <% if (fetched_user.isAdmin) { %>
+                <% if (fetched_user.isAdmin && !fetched_user.isBanned) { %>
                   <i class="fa-solid fa-user-pilot" style="font-size: 25px; color: #FF0000"
                     title="RBL Administrator"></i>
                   <% } %>
-                    <% if (fetched_user.isStaff) { %>
+                    <% if (fetched_user.isStaff && !fetched_user.isBanned) { %>
                       <i class="fa-solid fa-shield" style="font-size: 25px; color: #954AA8" title="RBL Staff"></i>
                       <% } %>
-                        <% if (fetched_user.badges.includes("partner")) { %>
+                        <% if (fetched_user.badges.includes("partner") && !fetched_user.isBanned) { %>
                           <i class="fa-solid fa-handshake" style="font-size: 25px; color: #FD6671"
                             title="RBL Partner"></i>
                           <% } %>
-                          <% if (fetched_user.badges.includes("certified")) { %>
+                          <% if (fetched_user.badges.includes("certified") && !fetched_user.isBanned) { %>
                             <i style="color: #FF4655" class="fa-solid fa-badge-check" title="Certified Developer"></i>
                             <% } %>
-                          <% if (fetched_user.badges.includes("femboy")) { %>
+                          <% if (fetched_user.isBanned) { %>
+                            <i style="color: red" class="fa-solid fa-hammer" title="This User has been Banned."></i>
+                            <% } %>
+                          <% if (fetched_user.badges.includes("femboy") && !fetched_user.isBanned) { %>
                             <i style="color: pink" class="fa-solid fa-badge-check" title="@A2"></i>
                             <% } %>
-                            <% if (fetched_user.badges.includes("contributor")) { %>
+                            <% if (fetched_user.badges.includes("contributor") && !fetched_user.isBanned) { %>
                               <i class="fa-solid fa-sparkles" style="font-size: 25px; color: #F38BF1" title="RBL Contributor"></i>
                               <% } %>
-                                <% if (bots.length> 0) { %>
+                                <% if (bots.length > 0 && fetched_user.isBanned != true) { %>
                                   <i class="fa-solid fa-code" style="font-size: 25px; color: #3498DB"
                                     title="Bot Developer"></i>
                                   <% } %>
             </b></h2>
           <p style="color: white">
-            <%= fetched_user.bio %>
+		<%= !fetched_user.isBanned ? fetched_user.bio : "" %>
           </p>
           <p style="color:white">
             <i style="margin-right: 5px;" class="fa-solid fa-clock"></i> <b>Joined</b>: <%= new
               Date(fetched_user.createdAt).toLocaleDateString() %>&nbsp;&nbsp;|&nbsp;&nbsp;
-              <i style="margin-right: 5px;" class="fa-solid fa-robot"></i> <b>Bot Count</b>: <%= bots.length %>
+              <i style="margin-right: 5px;" class="fa-solid fa-robot"></i> <b>Bot Count</b>: <%= !fetched_user.isBanned ? bots.length : "???" %>
           </p>
           <% if (user && fetched_user.revoltId===user.revoltId) { %>
             <a href="/users/<%= fetched_user.revoltId %>/edit" type="button"
               style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent"
               class="btn btn-info pr-3 pl-3 mr-1"><i class="fa-solid fa-edit"></i> Edit Profile</a>
             <% } %>
-              <% if (fetched_user.website) { %>
+              <% if (fetched_user.website && !fetched_user.isBanned) { %>
                 <a href="<%= fetched_user.website %>" target="_blank" type="button"
                   style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent"
                   class="btn btn-info pr-3 pl-3 mr-1"><i class="fa-solid fa-globe"></i> Website</a>
                 <% } %>
-                  <% if (fetched_user.github) { %>
+                  <% if (fetched_user.github && !fetched_user.isBanned) { %>
                     <a href="<%= fetched_user.github %>" target="_blank" type="button"
                       style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent"
                       class="btn btn-info pr-3 pl-3 mr-1"><i class="fa-brands fa-github"></i> Github</a>
                     <% } %>
-                      <% if (fetched_user.twitter) { %>
+                      <% if (fetched_user.twitter && !fetched_user.isBanned) { %>
                         <a href="<%= fetched_user.twitter %>" target="_blank" type="button"
                           style="border-radius: 7px;margin-top:3px; background-color: #FF3366;border-color: transparent"
                           class="btn btn-info pr-3 pl-3 mr-1"><i class="fa-brands fa-twitter"></i> Twitter</a>
@@ -85,14 +88,15 @@
     <div class="desccard" style="padding-left:0px">
       <div class="card-body">
         <div id="bot-description">
-          <%= fetched_user.description %>
+          <%= !fetched_user.isBanned ? fetched_user.description : "" %>
         </div>
       </div>
     </div>
+	<% if (!fetched_user.isBanned) { %>
 
     <h1 style="color: white;margin-top:65px;"><i class="fa-solid fa-robot"></i> Bots</h1>
     <p style="color: white;"> Bots that <%= fetched_user.name %> owns.</p>
-    <% if (bots.length> 0) { bots.map(b => { %>
+    <% if (bots.length> 0 && !fetched_user.isBanned) { bots.map(b => { %>
       <div class="card" style="border-radius:10px;">
         <div class="banner" style="background-image: url(<%= b.bannerURL || b.iconURL %>); opacity: 0.15"
           title="Banner"></div>
@@ -150,12 +154,13 @@
               <a href="/bots/submit">
                 <button style="margin: -67px -200px 0px 0px;" class="votebtn"><i class="fa-solid fa-plus"></i> Add a
                   bot</button></a>
-              <% } %>
+            <% } %>
           </div>
         </div>
         <% } %>
   </div>
   <br><br>
+       <% } %>
   <%- include("../parts/footer.ejs") %>
 
     <script>

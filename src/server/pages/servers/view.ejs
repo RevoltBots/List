@@ -204,7 +204,7 @@
                   </button>
                   <div class="dropdown-menu" style="background-image:radial-gradient( circle 325px at 19.2% 64.8%,  rgba(254,62,101,1) 9.7%, rgba(166,24,146,1) 91.3% );border-radius: 8px" aria-labelledby="reviewOptionsDropdown-<%= review.revoltId %>">
                     <a class="dropdown-item" style="color: white" href="#reply-<%= review.revoltId %>" data-review-id="<%= review.revoltId %>" onclick="copyToClipboard('reply-<%= review.revoltId %>')"><i class="fa-solid fa-paperclip"></i> Copy Link</a>
-                    <% if (user && !bot.owners.includes(user.revoltId)) { %>
+                    <% if (user && !servers.owners.includes(user.revoltId)) { %>
                     <a class="dropdown-item flag-review" style="color: white" href="#replyFlagModal-<%- review.revoltId %>" data-review-id="<%= review.revoltId %>"><i style="color:#CCCC0A" class="fa-solid fa-flag"></i> Flag</a>
                     <% } %>
 
