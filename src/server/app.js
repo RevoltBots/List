@@ -320,3 +320,16 @@ function generateLoginCode() {
   }
   return code;
 }
+
+process.on("error", (err)=>{
+	console.log(err.message)
+})
+process.on("unhandledRejection", (err)=>{
+	console.log(err.message)
+})
+process.on("unhandledException", (err)=>{
+	console.log(err.message)
+})
+process.on("warn", (err)=>{
+	console.log(err.message)
+})

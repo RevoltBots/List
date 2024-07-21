@@ -52,6 +52,8 @@ module.exports = {
     ]
   },
   channels: {
+    statusLogs: "01HXZCBGHBRY68JZTWB2DJE3HB",
+    errorLogs: "01HXZCBGHBRY68JZTWB2DJE3HB",
     weblogs: "01GQ1AKANW8TVTH6R2P79069K8",
     votelogs: "01GXCM24QX3WZP1GBNFQEHSHME",
     reportlogs: "01H1TSKW4XE35HNJAB3W8NM65D",

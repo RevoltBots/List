@@ -37,12 +37,13 @@ for (const cfile of getFiles("commands")) {
 
 selfBot.on("ready", () => {
   console.log(`[INFO] Logged in as ${selfBot.user.username}`);
-  selfBot.users.edit({
+/*  selfBot.users.edit({
     status: {
       presence: "Focus",
       text: "Inviting bots to the server..",
     },
   });
+*/
 });
 
 client.once("ready", () => {
@@ -69,3 +70,15 @@ selfBot.login({
   password: config.selfbot.password,
 });
 
+process.on("error", (err)=>{
+	console.log(err.message)
+})
+process.on("unhandledRejection", (err)=>{
+	console.log(err.message)
+})
+process.on("unhandledException", (err)=>{
+	console.log(err.message)
+})
+process.on("warn", (err)=>{
+	console.log(err.message)
+})

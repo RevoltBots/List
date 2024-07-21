@@ -25,48 +25,6 @@ client.aliases = new Collection();
 client.memberMap = new Map();
 client.eepy = sleep
 this.userCache = [];
-/*
-client.memberCount = (server) => {
-  if (typeof server === "object") server = server._id;
-  return client.memberMap.get(server)?.length;
-}
-
-client.mm = mapMembers;
-function mapMembers() {
-  return new Promise(async res => {
-    const evaluate = (data) => {
-      data = data.map(v => v.value);
-      data.forEach(members => {
-        if (!members) return;
-        const users = members.users;
-        members = members.members;
-        const server = members[0].server._id;
-        members = members.map(m => m.id.user);
-        this.memberMap.set(server, members);
-      });
-    }
-
-    const promises = [];
-    const servers = this.servers;
-    console.log(servers)
-
-    console.log("Started mapping server members");
-    for (let i = 0; i < servers.length; i++) {
-      if (i % 15 === 0 && i !== 0) {
-        evaluate(await Promise.allSettled(promises));
-        console.log("Mapped " + Math.round((i / servers.length * 100)) + "%")
-        promises.length = 0;
-        await sleep.sleep(5);
-      }
-      await sleep.sleep(5);
-      promises.push(servers[i].fetchMembers());
-    }
-    if (promises.length !== 0) evaluate(await Promise.allSettled(promises));
-    console.log("Finished mapping server members!");
-    res();
-  });
-}
-*/
 const getFiles = (path) =>
   readdirSync(join(__dirname, path)).filter((file) => file.endsWith(".js"));
 for (const cfile of getFiles("commands")) {
@@ -78,3 +36,16 @@ for (const cfile of getFiles("commands")) {
 global.sclient = client;
 client.loginBot(config.clients.servers.token);
 
+
+process.on("error", (err)=>{
+	console.log(err.message)
+})
+process.on("unhandledRejection", (err)=>{
+	console.log(err.message)
+})
+process.on("unhandledException", (err)=>{
+	console.log(err.message)
+})
+process.on("warn", (err)=>{
+	console.log(err.message)
+})
