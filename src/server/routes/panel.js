@@ -320,8 +320,25 @@ router.post("/badges/add", async (req, res) => {
       await sleep(700)
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.status(400).json({ message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
     });
+  } else if (req.body.badge === "reviewer") {
+    if (user.badges.includes("reviewer")) return res.status(400).json({ message: "User is already a Reviewer." });
+    user.badges.push("reviewer");
+    await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
+      if (data.roles) data.roles.map(e => roles.push(e));
+      roles.push(config.roles.reviewer);
+      await sleep(700)
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.status(400).json({ message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+    });
+  } else if (req.body.badge === "developers") {
+    if (user.badges.includes("developers")) return res.status(400).json({ message: "User is already a Developer." });
+    user.badges.push("developers");
+    await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
+      if (data.roles) data.roles.map(e => roles.push(e));
+      roles.push(config.roles.developers);
+      await sleep(700)
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.status(400).json({ message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+    });
   }
-
   user.save().then(() => {
     res.status(201).json({ message: `Successfully added badge ${req.body.badge} to user.` });
   });
@@ -356,10 +373,17 @@ router.post("/badges/remove", async (req, res) => {
       await sleep(700);
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.status(400).json({ message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
     });
+  } else if (req.body.badge === "developers") {
+    if (!user.badges.includes("developers")) return res.status(400).json({ message: "User is not a Developer." });
+    user.badges.filter(object => object != req.body.badge);
+    await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (res) => {
+      res.roles.filter(e => e != config.roles.developers).map(e => roles.push(e));
+      await sleep(700);
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.status(400).json({ message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+    });
   }
-
   user.save().then(() => {
-    res.status(201).json({ message: `Successfully removed badge ${req.body.badge} to user.` });
+    res.status(201).json({ message: `Successfully removed badge ${req.body.badge} from user.` });
   });
 });
 
