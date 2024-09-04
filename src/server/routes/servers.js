@@ -276,10 +276,6 @@ router.post("/submit", async (req, res) => {
       }
     });
   }
-  if (await serverModel.findOne({vanity: data.vanity})) {
-	return res.status(400).render().json({ message: "Vanity Already Exists!", code: "ERROR" });
-
-  }
   await serverModel.create({
     id: data.serverid,
     name: serverRaw.name,
@@ -293,7 +289,7 @@ router.post("/submit", async (req, res) => {
     invite: data.invite || null,
     tags: data.tags,
     owners: data.owners,
-    vanity: data.vanity || null,
+    vanity: data?.vanity || null,
     submittedOn: Date.now(),
   })
     .then(async () => {
