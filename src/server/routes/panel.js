@@ -201,6 +201,48 @@ router.get("/bots/:id/deny", async (req, res) => {
   });
 });
 
+router.get("/bots/:id/delete", async (req, res) => {
+  let bot = await botModel.findOne({ id: req.params.id });
+  if (!bot || bot.deleted) return res.status(404).json({ message: "This bot was not found or it has been deleted" });
+  if (bot.status !== "approved" || bot.status !== "denied") return res.status(400).json({ message: "This bot has already been deleted or denied."});
+  let user = await userModel.findOne({ revoltId: req.session.userAccountId });
+  if (user) {
+    let userRaw = await client.users.fetch(user.revoltId);
+    user.username = userRaw.username;
+    user.avatar = userRaw.avatar;
+  }
+  res.render('panel/delete.ejs', {
+    bot,
+    user,
+    req
+  });
+});
+router.post("/bots/:id/delete", async (req, res) => {
+  let bot = await botModel.findOne({ id: req.params.id });
+  if (!bot || bot.deleted) return res.status(404).json({ message: "This bot was not found or it has been deleted" });
+  if (bot.status !== "approved" || bot.status !== "denied") return res.status(400).json({ message: "This bot has already been approved or denied."});
+  bot.status = "deleted";
+  await bot.delete().then(async () => {
+    let testing = client.servers.get("01GQ14WC58C8AXCWNJQBFDZNT3");
+    console.log(testing)
+    let target = await testing.fetchMember(bot.id);
+    console.log(target)
+    try {
+      await target?.kick();
+      res.status(201).json({ message: "Successfully Deleted", code: "OK" });
+      let logs = client.channels.get(config.channels.weblogs);
+      logs.sendMessage(
+        `<\\@${bot.owners[0]}>'s bot **${bot.name}** has been **Deleted** by <\\@${req.session.userAccountId}>.\n<https://revoltbots.org/bots/${bot.id}>\n**Reason**: ${req.body.reason || "None provided."}`
+      );
+      bot.owners.forEach(async (owner) => {
+        let user = await client.users.fetch(owner).catch(() => { })
+        await user.openDM().then((dm) => { dm.sendMessage(`:x: Your bot **${bot.name}** has been **Deleted** on RevoltBots.org!\n**Reviewer**: <@${bot.reviewer}>\n**Reason**: ${req.body.reason || "None provided."}`) }).catch(() => { return });
+      })
+      } catch(err) {
+        console.error(err);
+      }
+  })
+})
 router.post("/bots/:id/deny", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
   if (!bot || bot.deleted) return res.status(404).json({ message: "This bot was not found or it has been deleted" });
