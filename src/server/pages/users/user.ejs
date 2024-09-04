@@ -47,6 +47,9 @@
                             <% if (fetched_user.badges.includes("contributor") && !fetched_user.isBanned) { %>
                               <i class="fa-solid fa-sparkles" style="font-size: 25px; color: #F38BF1" title="RBL Contributor"></i>
                               <% } %>
+			      <% if (fetched_user.badges.includes("reviewer") && !fetched_user.isBanned) { %>
+                                  <i class="fa-solid fa-star" style="font-size: 25px; color: green" title="TP Reviewer"></i>
+                                <% } %>
                                 <% if (bots.length > 0 && fetched_user.isBanned != true) { %>
                                   <i class="fa-solid fa-code" style="font-size: 25px; color: #3498DB"
                                     title="Bot Developer"></i>
