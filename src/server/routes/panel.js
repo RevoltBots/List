@@ -204,7 +204,7 @@ router.get("/bots/:id/deny", async (req, res) => {
 router.get("/bots/:id/delete", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
   if (!bot || bot.deleted) return res.status(404).json({ message: "This bot was not found or it has been deleted" });
-  if (bot.status !== "approved" || bot.status !== "denied") return res.status(400).json({ message: "This bot has already been deleted or denied."});
+  if (bot.status !== "approved" && bot.status !== "denied") return res.status(400).json({ message: "This bot has already been deleted or denied."});
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
     let userRaw = await client.users.fetch(user.revoltId);
@@ -220,7 +220,7 @@ router.get("/bots/:id/delete", async (req, res) => {
 router.post("/bots/:id/delete", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
   if (!bot || bot.deleted) return res.status(404).json({ message: "This bot was not found or it has been deleted" });
-  if (bot.status !== "approved" || bot.status !== "denied") return res.status(400).json({ message: "This bot has already been approved or denied."});
+  if (bot.status !== "approved" && bot.status !== "denied") return res.status(400).json({ message: "This bot has already been approved or denied."});
   bot.status = "deleted";
   await bot.delete().then(async () => {
     let testing = client.servers.get("01GQ14WC58C8AXCWNJQBFDZNT3");
