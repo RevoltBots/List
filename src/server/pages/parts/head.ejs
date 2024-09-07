@@ -95,7 +95,7 @@ return sParameterName[1];
 }
 }​
 </script>
-<% if (req.body && req.body.message || GetURLParameter(message)){ %>
+<% if (GetURLParameter(message)){ %>
 <button type="button" data-dismiss="alert" aria-label="close" class="close"><span aria-hidden="true">×</span></button><strong>ERROR:</strong><%= GetURLParameter(message) || req?.body.message %></div>
 <div class="alert alert-danger alert-dismissable fade in">
 <% } %>
