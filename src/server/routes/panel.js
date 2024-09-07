@@ -118,7 +118,7 @@ router.post("/reports/resolve", async (req, res) => {
    report.active = false;
    report.notes = data.notes || null;
    await report.save().then(
-    res.render("panel/index.ejs", {message: "You have successfully resolved the report.")
+    res.render("panel/index.ejs", {message: "You have successfully resolved the report."})
    )
   }
 })
