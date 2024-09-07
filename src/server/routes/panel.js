@@ -463,8 +463,8 @@ router.post("/badges/remove", async (req, res) => {
 
 router.get("/certification/:id/approve", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.redirect("#?message=This bot could not be found on our list." });
-  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot could not be found on our list.");
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification.");
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -483,8 +483,8 @@ router.get("/certification/:id/approve", async (req, res) => {
 
 router.get("/certification/:id/deny", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
-  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted");
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification.");
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -501,8 +501,8 @@ router.get("/certification/:id/deny", async (req, res) => {
 
 router.post("/certification/:id/deny", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
-  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted");
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification.");
 
   bot.updateOne({ certifyApplied: false })
   await bot.save().then(async () => {
@@ -525,8 +525,8 @@ router.post("/certification/:id/deny", async (req, res) => {
 
 router.post("/certification/:id/approve", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.redirect("#?message=This bot could not be found on our list." });
-  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot could not be found on our list.");
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification.");
 
   bot.certified = true;
   bot.certifyApplied = false;
@@ -572,8 +572,8 @@ router.post("/certification/:id/approve", async (req, res) => {
 
 router.get("/certification/:id/certifyDelete", checkAdmin, async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
-  if (!bot.certified) return res.redirect("#?message=This bot has isn't certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted");
+  if (!bot.certified) return res.redirect("#?message=This bot has isn't certification.");
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -590,8 +590,8 @@ router.get("/certification/:id/certifyDelete", checkAdmin, async (req, res) => {
 
 router.post("/certification/:id/certifyDelete", checkAdmin, async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot?.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
-  if (!bot?.certified) return res.redirect("#?message=This bot has not certification." });
+  if (!bot || bot?.deleted) return res.redirect("#?message=This bot was not found or it has been deleted");
+  if (!bot?.certified) return res.redirect("#?message=This bot has not certification." );
 
   bot.certified = false;
   await bot.save().then(async () => {
