@@ -82,6 +82,6 @@
 </style>
 
 <div style="border: 1px solid darkred; background: salmon">
-  <i>&#9888;</i> ERROR: <%- document.baseURI.toString().split("message=")[1].split("&")[0] %>
+  <i>&#9888;</i> ERROR: <% req.query.message %>
 </div>
 
