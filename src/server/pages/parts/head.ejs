@@ -80,7 +80,7 @@
   border-color: #EF5350
 }
 </style>
-<% if (this.window.location.search?.toString().split("message=")[1].split("&")[0]){ %>
+<% if (window.location.search?.toString().split("message=")[1].split("&")[0]){ %>
 <button type="button" data-dismiss="alert" aria-label="close" class="close"><span aria-hidden="true">×</span></button><strong>ERROR:</strong><%= this.window.location.search.toString().split("message=")[1].split("&")[0] %></div>
 <div class="alert alert-danger alert-dismissable fade in">
 <% } %>
