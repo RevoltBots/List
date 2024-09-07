@@ -363,7 +363,7 @@ router.get("/badges", checkAdmin, async (req, res) => {
 
 router.post("/badges/add", async (req, res) => {
   let user = await userModel.findOne({ revoltId: req.body.userId });
-  if (!user) return res.redirect("#?message=User was not found within database." });
+  if (!user) return res.redirect("#?message=User was not found within database.");
 
   const roles = [];
   if (req.body.badge === "staff") {
@@ -377,7 +377,7 @@ router.post("/badges/add", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect(`#?message=Unable to add role to this user but I added them as a ${req.body.badge}.` ) });
     });
   } else if (req.body.badge === "partner") {
-    if (user.badges.includes("partner")) return res.redirect("#?message=User is already a partner." });
+    if (user.badges.includes("partner")) return res.redirect("#?message=User is already a partner.");
     user.badges.push("partner");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
@@ -386,7 +386,7 @@ router.post("/badges/add", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return rres.redirect(`#?message=Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "contributor") {
-    if (user.badges.includes("contributor")) return res.redirect("#?message=User is already a contributor." });
+    if (user.badges.includes("contributor")) return res.redirect("#?message=User is already a contributor.");
     user.badges.push("contributor");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
@@ -395,7 +395,7 @@ router.post("/badges/add", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect(`#?message=message:Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "reviewer") {
-    if (user.badges.includes("reviewer")) return res.redirect("#?message=User is already a Reviewer." });
+    if (user.badges.includes("reviewer")) return res.redirect("#?message=User is already a Reviewer.");
     user.badges.push("reviewer");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
@@ -404,7 +404,7 @@ router.post("/badges/add", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect("#?message=Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "developers") {
-    if (user.badges.includes("developers")) return res.redirect("#?message=User is already a Developer." });
+    if (user.badges.includes("developers")) return res.redirect("#?message=User is already a Developer.");
     user.badges.push("developers");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
