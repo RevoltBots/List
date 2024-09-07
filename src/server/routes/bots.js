@@ -165,7 +165,7 @@ router.post("/certify", checkAuth, async (req, res) => {
   )
   if (!botDb.certifyApplied && !botDb.certified && botDb?.servers > 0 && botDb?.monthlyVotes >= 50 && (new Date().getTime() - new
     Date(botDb.submittedOn).getTime()) / (1000 * 60 * 60 * 24.0) >= 16) {
-    if (botDb.certifyApplied) return return res.redirect("/bots/certify?message=You already applied for certification.");
+    if (botDb.certifyApplied) return res.redirect("/bots/certify?message=You already applied for certification.");
 
     botDb.updateOne({ certifyApplied: true }).then(() => {
       res.status(200).json({ message: "Applied for certification! You'll be notified once your application is looked over." });
