@@ -13,3 +13,74 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7598475548528401"
      crossorigin="anonymous"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+.demo-preview {
+  padding-top: 20px;
+  padding-bottom: 10px;
+  width: 70%;
+  margin: auto;
+  text-align: center;
+}
+
+.alert {
+  padding: .7143rem 1.071rem;
+  margin-bottom: 1.429rem;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  color: #FFF
+}
+
+.alert.alert-square {
+  border-radius: 0
+}
+
+.alert .close {
+  position: relative
+}
+
+.alert.alert-dismissable,
+.alert.alert-dismissible {
+  padding-right: 2.5rem
+}
+
+.alert.alert-dismissable .close,
+.alert.alert-dismissible .close {
+  top: -2px;
+  right: -20px;
+  color: inherit
+}
+
+.alert.alert-primary {
+  background-color: #2196F3;
+  border-color: #2196F3
+}
+
+.alert.alert-secondary {
+  background-color: #323a45;
+  border-color: #323a45
+}
+
+.alert.alert-success {
+  background-color: #64DD17;
+  border-color: #64DD17
+}
+
+.alert.alert-info {
+  background-color: #29B6F6;
+  border-color: #29B6F6
+}
+
+.alert.alert-warning {
+  background-color: #FFD600;
+  border-color: #FFD600
+}
+
+.alert.alert-danger {
+  background-color: #ef1c1c;
+  border-color: #EF5350
+}
+</style>
+<% if (req.body && req.body.message || res.params.message){ %>
+<button type="button" data-dismiss="alert" aria-label="close" class="close"><span aria-hidden="true">×</span></button><strong>ERROR:</strong><%= req?.params.message || req?.body.message %></div>
+<div class="alert alert-danger alert-dismissable fade in">
+<% %>
