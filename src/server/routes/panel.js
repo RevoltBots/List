@@ -414,7 +414,7 @@ router.post("/badges/add", async (req, res) => {
     });
   }
   user.save().then(() => {
-    res.render("panel/badges.ejs", { message: `Successfully added badge ${req.body.badge} to user.` });
+    res.render("panel/badges.ejs", { user: user, message: `Successfully added badge ${req.body.badge} to user.` });
   });
 });
 
@@ -457,7 +457,7 @@ router.post("/badges/remove", async (req, res) => {
     });
   }
   user.save().then(() => {
-    res.render("panel/badges.ejs", { message: `Successfully removed badge ${req.body.badge} from user.` });
+    res.render("panel/badges.ejs", {user: user, message: `Successfully removed badge ${req.body.badge} from user.` });
   });
 });
 
