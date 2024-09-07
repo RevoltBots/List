@@ -80,7 +80,7 @@
   border-color: #EF5350
 }
 </style>
-<% if (req.body && req.body.message || res.params.message){ %>
+<% if (req.body && req.body.message || res.query.message){ %>
 <button type="button" data-dismiss="alert" aria-label="close" class="close"><span aria-hidden="true">×</span></button><strong>ERROR:</strong><%= req?.params.message || req?.body.message %></div>
 <div class="alert alert-danger alert-dismissable fade in">
 <% %>
