@@ -84,6 +84,6 @@
 
 <script>
 if (document.baseURI.toString().split("message=")[1].split("&")[0]){
-document.getElementById("myHeading").innerHTML = '<div style="text-align: center;border: 10px solid salmon; background: salmon">'+ document.baseURI.toString().split("message=")[1].split("&")[0].replaceAll("%20", " ") + '</div>'
+document.getElementById("myHeading").innerHTML = '<div style="text-align: center;border: 10px solid salmon; background: salmon">'+ document.baseURI.toString().split("message=")[1].split("&")[0].replaceAll("+", " ").replaceAll("%20", " ") + '</div>'
 }
 </script>
