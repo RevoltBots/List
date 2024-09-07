@@ -74,7 +74,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/:id/edit", checkAuth, async (req, res) => {
-  if (req.params.id !== req.session.userAccountId) return res.render("error.ejs", { message: "You are not authorized to perform this action." } });
+  if (req.params.id !== req.session.userAccountId) return res.render("error.ejs", { message: "You are not authorized to perform this action." });
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
     let userRaw = await client.users.fetch(user.revoltId);
