@@ -532,7 +532,7 @@ router.post("/certification/:id/approve", async (req, res) => {
   bot.certifyApplied = false;
   await bot.save().then(async () => {
     try {
-      res.redirect("#?message=Successfully Approved Certification", code: "OK" });
+      res.redirect("#?message=Successfully Approved Certification");
       let logs = client.channels.get(config.channels.weblogs);
       logs.sendMessage(
         `<\\@${bot.owners[0]}>'s bot **${bot.name}** has been **certified** by <\\@${req.session.userAccountId}>.\n<https://revoltbots.org/bots/${bot.id}>`
