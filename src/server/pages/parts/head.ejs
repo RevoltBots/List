@@ -80,8 +80,11 @@
   border-color: #EF5350
 }
 </style>
-
+<script>
+if (document.baseURI.toString().split("message=")[1].split("&")[0]){
 <div style="border: 1px solid darkred; background: salmon">
   <i>&#9888;</i> ERROR: <% req.query.message %>
 </div>
+}
+</script>
 
