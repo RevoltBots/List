@@ -41,7 +41,7 @@ router.get("/submit", checkAuth, async (req, res) => {
 router.post("/submit", checkAuth, async (req, res) => {
   const data = req.body;
   if (!data)
-    return res.status(400).json("You need to provide the bot's information.");
+    return res.redirect("/bots/submit?message=You+need+to+provide+the+bot's+information.");
   let user = await userModel.findOne({ id: req.session.userAccountId });
   if (user) {
     let userRaw = await client.users.fetch(user.revoltId);
@@ -115,7 +115,7 @@ router.post("/submit", checkAuth, async (req, res) => {
       submittedOn: Date.now(),
     })
     .then(async () => {
-      res.status(201).json({ message: "Added to queue", code: "OK" });
+      return res.redirect("/bots/${data.botid}?message=Added+to+queue");
       let logs = client.channels.get(config.channels.weblogs);
       logs.sendMessage(
         `<@${req.session.userAccountId}> has submitted **${BotRaw.username}** to the list.\n<https://revoltbots.org/bot/${data.botid}>`
@@ -165,7 +165,7 @@ router.post("/certify", checkAuth, async (req, res) => {
   )
   if (!botDb.certifyApplied && !botDb.certified && botDb?.servers > 0 && botDb?.monthlyVotes >= 50 && (new Date().getTime() - new
     Date(botDb.submittedOn).getTime()) / (1000 * 60 * 60 * 24.0) >= 16) {
-    if (botDb.certifyApplied) return res.status(409).json({ message: "You already applied for certification." });
+    if (botDb.certifyApplied) return return res.redirect("/bots/certify?message=You already applied for certification.");
 
     botDb.updateOne({ certifyApplied: true }).then(() => {
       res.status(200).json({ message: "Applied for certification! You'll be notified once your application is looked over." });
@@ -202,7 +202,7 @@ router.post("/:id/apikey", checkAuth, async (req, res) => {
   bot.apikey = genApiKey({ length: 20 });
   await bot.save();
   return res.redirect(
-    `/bots/${id}/edit?success=true&body=You have successfully generated a new token.`
+    `/bots/${id}/edit?success=true&message=You+have+successfully+generated+a+new+token.`
   );
 });
 
