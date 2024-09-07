@@ -85,7 +85,7 @@ router.get("/:id/edit", checkAuth, async (req, res) => {
 })
 
 router.post("/:id/edit", checkAuth, async (req, res) => {
-  if (req.params.id !== req.session.userAccountId) return res.render("error.ejs", { message: "You are not authorized to perform this action." } });
+  if (req.params.id !== req.session.userAccountId) return res.render("error.ejs", { message: "You are not authorized to perform this action." });
   const data = req.body;
   if (!data) return res.redirect(`#?message=No+data+was+changed+within+your+profile!`);
 
