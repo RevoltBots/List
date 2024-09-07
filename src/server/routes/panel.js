@@ -363,54 +363,54 @@ router.get("/badges", checkAdmin, async (req, res) => {
 
 router.post("/badges/add", async (req, res) => {
   let user = await userModel.findOne({ revoltId: req.body.userId });
-  if (!user) return res.render("panel/badges.ejs", { message: "User was not found within database." });
+  if (!user) return res.redirect("#?message=User was not found within database." });
 
   const roles = [];
   if (req.body.badge === "staff") {
-    if (user.isStaff) return res.render("panel/badges.ejs", { message: "User is already staff." });
+    if (user.isStaff) return res.redirect("#?message:User is already staff." );
     user.updateOne({ isStaff: true });
     client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`);
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
       roles.push(config.roles.staff);
       await sleep(700)
-      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect(`#?message=Unable to add role to this user but I added them as a ${req.body.badge}.` ) });
     });
   } else if (req.body.badge === "partner") {
-    if (user.badges.includes("partner")) return res.render("panel/badges.ejs", { message: "User is already a partner." });
+    if (user.badges.includes("partner")) return res.redirect("#?message=User is already a partner." });
     user.badges.push("partner");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
       roles.push(config.roles.partner);
       await sleep(700)
-      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return rres.redirect(`#?message=Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "contributor") {
-    if (user.badges.includes("contributor")) return res.render("panel/badges.ejs", { message: "User is already a contributor." });
+    if (user.badges.includes("contributor")) return res.redirect("#?message=User is already a contributor." });
     user.badges.push("contributor");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
       roles.push(config.roles.contributor);
       await sleep(700)
-      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect(`#?message=message:Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "reviewer") {
-    if (user.badges.includes("reviewer")) return res.render("panel/badges.ejs", { message: "User is already a Reviewer." });
+    if (user.badges.includes("reviewer")) return res.redirect("#?message=User is already a Reviewer." });
     user.badges.push("reviewer");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
       roles.push(config.roles.reviewer);
       await sleep(700)
-      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect("#?message=Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "developers") {
-    if (user.badges.includes("developers")) return res.render("panel/badges.ejs", { message: "User is already a Developer." });
+    if (user.badges.includes("developers")) return res.redirect("#?message=User is already a Developer." });
     user.badges.push("developers");
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (data) => {
       if (data.roles) data.roles.map(e => roles.push(e));
       roles.push(config.roles.developers);
       await sleep(700)
-      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.status(400).json({ message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect(`#?message=Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
     });
   }
   user.save().then(() => {
@@ -420,11 +420,11 @@ router.post("/badges/add", async (req, res) => {
 
 router.post("/badges/remove", async (req, res) => {
   let user = await userModel.findOne({ revoltId: req.body.userId });
-  if (!user) return res.render("panel/badges.ejs", { message: "User was not found within database." });
+  if (!user) return res.redirect("#?message=User was not found within database.");
 
   const roles = [];
   if (req.body.badge === "staff") {
-    if (!user.isStaff) return res.render("panel/badges.ejs", { message: "User is not staff." });
+    if (!user.isStaff) return res.redirect("#?message=User is not staff.");
     user.updateOne({ isStaff: false });
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (res) => {
       res.roles.filter(e => e != config.roles.staff).map(e => roles.push(e));
@@ -432,7 +432,7 @@ router.post("/badges/remove", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
     });
   } else if (req.body.badge === "partner") {
-    if (!user.badges.includes("partner")) return res.render("panel/badges.ejs", { message: "User is not a partner." });
+    if (!user.badges.includes("partner")) return res.redirect("#?message=User is not a partner.");
     user.badges.filter(object => object != req.body.badge);
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (res) => {
       res.roles.filter(e => e != config.roles.partner).map(e => roles.push(e));
@@ -440,7 +440,7 @@ router.post("/badges/remove", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
     });
   } else if (req.body.badge === "contributor") {
-    if (!user.badges.includes("contributor")) return res.render("panel/badges.ejs", { message: "User is not a contributor." });
+    if (!user.badges.includes("contributor")) return res.redirect("#?message=User is not a contributor.");
     user.badges.filter(object => object != req.body.badge);
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (res) => {
       res.roles.filter(e => e != config.roles.contributor).map(e => roles.push(e));
@@ -448,7 +448,7 @@ router.post("/badges/remove", async (req, res) => {
       await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.render("panel/badges.ejs", { message: `Unable to add role to this user but I added them as a ${req.body.badge}.` }) });
     });
   } else if (req.body.badge === "developers") {
-    if (!user.badges.includes("developers")) return res.render("panel/badges.ejs", { message: "User is not a Developer." });
+    if (!user.badges.includes("developers")) return res.redirect("#?message=User is not a Developer.");
     user.badges.filter(object => object != req.body.badge);
     await client.api.get(`/servers/${config.servers.main}/members/${req.body.userId}`).then(async (res) => {
       res.roles.filter(e => e != config.roles.developers).map(e => roles.push(e));
@@ -457,14 +457,14 @@ router.post("/badges/remove", async (req, res) => {
     });
   }
   user.save().then(() => {
-    res.render("panel/badges.ejs", {user: user, message: `Successfully removed badge ${req.body.badge} from user.` });
+    res.redirect(`#?message=Successfully removed badge ${req.body.badge} from user.` });
   });
 });
 
 router.get("/certification/:id/approve", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.render("panel/certification.ejs", { message: "This bot could not be found on our list." });
-  if (!bot.certifyApplied) return res.render("panel/certification.ejs", { message: "This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot could not be found on our list." });
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -483,8 +483,8 @@ router.get("/certification/:id/approve", async (req, res) => {
 
 router.get("/certification/:id/deny", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.render("panel/certification.ejs", { message: "This bot was not found or it has been deleted" });
-  if (!bot.certifyApplied) return res.render("panel/certification.ejs", { message: "This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -501,8 +501,8 @@ router.get("/certification/:id/deny", async (req, res) => {
 
 router.post("/certification/:id/deny", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.render("panel/certification.ejs", { message: "This bot was not found or it has been deleted" });
-  if (!bot.certifyApplied) return res.render("panel/certification.ejs", { message: "This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
 
   bot.updateOne({ certifyApplied: false })
   await bot.save().then(async () => {
@@ -525,14 +525,14 @@ router.post("/certification/:id/deny", async (req, res) => {
 
 router.post("/certification/:id/approve", async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.render("panel/certification.ejs", { message: "This bot could not be found on our list." });
-  if (!bot.certifyApplied) return res.render("panel/certification.ejs", { message: "This bot has already been denied for certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot could not be found on our list." });
+  if (!bot.certifyApplied) return res.redirect("#?message=This bot has already been denied for certification." });
 
   bot.certified = true;
   bot.certifyApplied = false;
   await bot.save().then(async () => {
     try {
-      res.render("panel/certification.ejs", { message: "Successfully Approved Certification", code: "OK" });
+      res.redirect("#?message=Successfully Approved Certification", code: "OK" });
       let logs = client.channels.get(config.channels.weblogs);
       logs.sendMessage(
         `<\\@${bot.owners[0]}>'s bot **${bot.name}** has been **certified** by <\\@${req.session.userAccountId}>.\n<https://revoltbots.org/bots/${bot.id}>`
@@ -572,8 +572,8 @@ router.post("/certification/:id/approve", async (req, res) => {
 
 router.get("/certification/:id/certifyDelete", checkAdmin, async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot.deleted) return res.render("panel/certification.ejs", { message: "This bot was not found or it has been deleted" });
-  if (!bot.certified) return res.render("panel/certification.ejs", { message: "This bot has isn't certification." });
+  if (!bot || bot.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
+  if (!bot.certified) return res.redirect("#?message=This bot has isn't certification." });
 
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
@@ -590,8 +590,8 @@ router.get("/certification/:id/certifyDelete", checkAdmin, async (req, res) => {
 
 router.post("/certification/:id/certifyDelete", checkAdmin, async (req, res) => {
   let bot = await botModel.findOne({ id: req.params.id });
-  if (!bot || bot?.deleted) return res.render("panel/certification.ejs", { message: "This bot was not found or it has been deleted" });
-  if (!bot?.certified) return res.render("panel/certification.ejs", { message: "This bot has isn't certification." });
+  if (!bot || bot?.deleted) return res.redirect("#?message=This bot was not found or it has been deleted" });
+  if (!bot?.certified) return res.redirect("#?message=This bot has not certification." });
 
   bot.certified = false;
   await bot.save().then(async () => {
