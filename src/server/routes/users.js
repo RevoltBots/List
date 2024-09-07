@@ -74,7 +74,7 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/:id/edit", checkAuth, async (req, res) => {
-  if (req.params.id !== req.session.userAccountId) return res.status(403).json({ message: "You are not authorized to perform this action." });
+  if (req.params.id !== req.session.userAccountId) return res.render("error.ejs", { message: "You are not authorized to perform this action." } });
   let user = await userModel.findOne({ revoltId: req.session.userAccountId });
   if (user) {
     let userRaw = await client.users.fetch(user.revoltId);
@@ -85,9 +85,9 @@ router.get("/:id/edit", checkAuth, async (req, res) => {
 })
 
 router.post("/:id/edit", checkAuth, async (req, res) => {
-  if (req.params.id !== req.session.userAccountId) return res.status(403).json({ message: "You are not authorized to perform this action." });
+  if (req.params.id !== req.session.userAccountId) return res.render("error.ejs", { message: "You are not authorized to perform this action." } });
   const data = req.body;
-  if (!data) return res.status(400).json("No data was changed within your profile!");
+  if (!data) return res.redirect(`#?message=No+data+was+changed+within+your+profile!`);
 
   const user = await userModel.findOne({ revoltId: req.session.userAccountId });
   user.bio = data.bio || null;
