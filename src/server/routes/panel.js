@@ -401,7 +401,7 @@ router.post("/badges/add", async (req, res) => {
       if (data.roles) data.roles.map(e => roles.push(e));
       roles.push(config.roles.reviewer);
       await sleep(700)
-      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect("#?message=Unable to add role to this user but I added them as a ${req.body.badge}.`) });
+      await client.api.patch(`/servers/${config.servers.main}/members/${req.body.userId}`, { "roles": roles }).catch(() => { return res.redirect(`#?message=Unable to add role to this user but I added them as a ${req.body.badge}.`) });
     });
   } else if (req.body.badge === "developers") {
     if (user.badges.includes("developers")) return res.redirect("#?message=User is already a Developer.");
