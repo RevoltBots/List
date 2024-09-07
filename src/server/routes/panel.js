@@ -457,7 +457,7 @@ router.post("/badges/remove", async (req, res) => {
     });
   }
   user.save().then(() => {
-    res.redirect(`#?message=Successfully removed badge ${req.body.badge} from user.` });
+    res.redirect(`#?message=Successfully removed badge ${req.body.badge} from user.`);
   });
 });
 
